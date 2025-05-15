@@ -21,4 +21,4 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 # Laravel permissions
 RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage
 
-CMD php artisan serve --host=0.0.0.0 --port=8001
+CMD php artisan serve --host=0.0.0.0 --port=8002
