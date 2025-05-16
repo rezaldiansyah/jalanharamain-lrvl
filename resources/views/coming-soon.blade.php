@@ -31,6 +31,14 @@
                 Embarking on a journey of spiritual enlightenment. Coming soon to guide you on your sacred path.
             </p>
 
+            <!-- Updated button with better visibility -->
+            <div class="mb-12">
+                <a href="{{ route('webinar') }}" 
+                   class="inline-block px-8 py-4 bg-white text-black font-poppins font-bold rounded-lg transform hover:scale-105 transition-all duration-300 hover:shadow-2xl border-2 border-white">
+                    Daftar Webinar Gratis
+                </a>
+            </div>
+
             <div class="flex justify-center space-x-8 mb-12">
                 <a href="https://instagram.com/jalanharamain" target="_blank" 
                    class="group">

@@ -23,10 +23,14 @@
                 <p class="font-poppins text-xl text-white text-center mb-12">
                     Bersama Ustadz dan Travel Expert Berpengalaman
                 </p>
+                <!-- Hero Section Button -->
                 <div class="text-center">
-                    <a href="#daftar" class="inline-block px-8 py-4 bg-white text-[#D4AF37] font-poppins font-semibold rounded-lg hover:shadow-2xl transition-all duration-300">
+                    <a href="#daftar" 
+                       class="inline-block px-8 py-4 bg-white text-[#D4AF37] font-poppins font-bold rounded-lg hover:shadow-2xl transition-all duration-300 border-2 border-white">
                         Daftar Sekarang
                     </a>
+                </div>
+
                 </div>
             </div>
         </div>
@@ -120,22 +124,69 @@
                                placeholder="Masukkan nama kota Anda">
                     </div>
 
+                    <!-- New Source Information Field -->
+                    <div>
+                        <label class="block font-poppins mb-2">Darimana Anda mengetahui webinar ini? *</label>
+                        <select name="source" 
+                                class="w-full px-4 py-2 border rounded-lg @error('source') border-red-500 @enderror"
+                                required>
+                            <option value="">Pilih Sumber Informasi</option>
+                            <option value="instagram" {{ old('source') == 'instagram' ? 'selected' : '' }}>Instagram</option>
+                            <option value="facebook" {{ old('source') == 'facebook' ? 'selected' : '' }}>Facebook</option>
+                            <option value="thread" {{ old('source') == 'thread' ? 'selected' : '' }}>Thread</option>
+                            <option value="whatsapp" {{ old('source') == 'whatsapp' ? 'selected' : '' }}>WhatsApp Grup</option>
+                            <option value="friend" {{ old('source') == 'friend' ? 'selected' : '' }}>Teman/Kerabat</option>
+                            <option value="other" {{ old('source') == 'other' ? 'selected' : '' }}>Lainnya</option>
+                        </select>
+                    </div>
+
+                    <!-- Form Submit Button -->
                     <button type="submit" 
-                            class="w-full py-4 bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-white font-poppins font-semibold rounded-lg hover:shadow-xl transition-all duration-300">
-                        Daftar Webinar
+                            onclick="submitToWhatsApp(); return false;"
+                            class="w-full py-4 bg-white text-[#D4AF37] font-poppins font-bold rounded-lg hover:shadow-xl transition-all duration-300 border-2 border-[#D4AF37]">
+                        Daftar Sekarang
                     </button>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        // City Select Handler
+        document.getElementById('citySelect').addEventListener('change', function() {
+            const otherCity = document.getElementById('otherCity');
+            otherCity.classList.toggle('hidden', this.value !== 'other');
+            otherCity.required = this.value === 'other';
+        });
+
+        // WhatsApp Submission Handler
+        function submitToWhatsApp() {
+            const form = document.querySelector('form');
+            const name = form.querySelector('[name="name"]').value;
+            const gender = form.querySelector('[name="gender"]:checked').value;
+            const email = form.querySelector('[name="email"]').value;
+            const whatsapp = form.querySelector('[name="whatsapp"]').value;
+            const citySelect = form.querySelector('[name="city"]');
+            const city = citySelect.value === 'other' ? form.querySelector('[name="other_city"]').value : citySelect.options[citySelect.selectedIndex].text;
+            const source = form.querySelector('[name="source"]');
+            const sourceInfo = source.options[source.selectedIndex].text;
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const message = `Assalamualaikum, saya ingin mendaftar webinar.%0A%0A` +
+                          `*Data Pendaftar*%0A` +
+                          `Nama: ${name}%0A` +
+                          `Jenis Kelamin: ${gender === 'male' ? 'Pria' : 'Wanita'}%0A` +
+                          `Email: ${email}%0A` +
+                          `WhatsApp: ${whatsapp}%0A` +
+                          `Kota: ${city}%0A` +
+                          `Sumber Informasi: ${sourceInfo}`;
+
+            window.open(`https://wa.me/62811935093?text=${message}`, '_blank');
+        }
+    </script>
 </body>
 </html>
-
-                    <!-- Add this script before closing body tag -->
-                    <script>
-                        document.getElementById('citySelect').addEventListener('change', function() {
-                            const otherCity = document.getElementById('otherCity');
-                            otherCity.classList.toggle('hidden', this.value !== 'other');
-                            otherCity.required = this.value === 'other';
-                        });
-                    </script>
