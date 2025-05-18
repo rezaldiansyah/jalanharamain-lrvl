@@ -15,22 +15,65 @@
 <body class="bg-gray-50">
     <div class="min-h-screen">
         <!-- Hero Section -->
-        <div class="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] py-20">
-            <div class="container mx-auto px-4">
-                <h1 class="font-playfair text-4xl md:text-6xl font-bold text-white text-center mb-6">
-                    Webinar Gratis: Persiapan Umroh yang Baik dan Benar
+        <div class="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] py-12 md:py-20">
+            <div class="container mx-auto px-4 max-w-4xl">
+                <h1 class="font-playfair text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 text-center mb-6 leading-tight">
+                    Bisa Umroh Tiap Bulan dan Penghasilan Juga, Mau?
                 </h1>
-                <p class="font-poppins text-xl text-white text-center mb-12">
-                    Bersama Ustadz dan Travel Expert Berpengalaman
-                </p>
-                <!-- Hero Section Button -->
-                <div class="text-center">
-                    <a href="#daftar" 
-                       class="inline-block px-8 py-4 bg-white text-[#D4AF37] font-poppins font-bold rounded-lg hover:shadow-2xl transition-all duration-300 border-2 border-white">
-                        Daftar Sekarang
-                    </a>
+                <div class="text-gray-800 text-center space-y-4 md:space-y-6 mb-8 md:mb-12">
+                    <p class="text-lg md:text-xl font-medium">Ingin ke Tanah Suci tapi masih terhalang biaya?</p>
+                    <p class="text-base md:text-lg">Bagaimana kalau justru Anda dibayar untuk berangkat ke sana?</p>
+                    <p class="text-base md:text-lg">Banyak orang ingin ke Mekkah. Tapi hanya sedikit yang tahu jalannya.</p>
+                    <p class="text-base md:text-lg font-semibold">Salah satunya: jadi Tour Leader Umroh.</p>
                 </div>
 
+                <div class="text-gray-800 space-y-3 md:space-y-4 mb-8 bg-white/30 p-6 rounded-lg">
+                    <p class="font-medium"> Bayu (bukan nama sebenarnya) dulunya staf admin. Hidupnya stagnan, kerja monoton. Sampai ia ikut webinar seperti ini dan melihat peluang.</p>
+                    <p class="font-medium">Bayu belajar cara jadi Tour Leader Umroh. Tiga bulan kemudian, ia dampingi satu grup jamaah.</p>
+                    <p class="font-medium">Bayu tidak hanya diberangkatkan, tapi juga diberi honor 5 juta per keberangkatan. Kini, ia bisa berangkat lagi sambil menabung untuk orang tuanya.</p>
+                    <p class="font-medium">Kalau Bayu bisa, kenapa Anda tidak?</p>
+                </div>
+
+                <div class="text-gray-800 space-y-3 md:space-y-4 mb-8 bg-white/30 p-6 rounded-lg">
+                    <p class="font-medium">✅ Bisa ibadah</p>
+                    <p class="font-medium">✅ Bisa bantu orang</p>
+                    <p class="font-medium">✅ Bisa hasilkan 3-5 juta tiap kali berangkat</p>
+                    <p class="font-medium">🚀 Ratusan orang sudah memulainya. Anda bisa jadi yang berikutnya.</p>
+                </div>
+
+                <div class="bg-white/30 p-6 rounded-lg mb-8 text-gray-800">
+                    <p class="mb-4 font-semibold">📚 Dalam webinar ini, Anda akan pelajari:</p>
+                    <div class="space-y-3">
+                        <p class="font-medium">✅ Cara jadi Tour Leader Umroh meski tanpa pengalaman</p>
+                        <p class="font-medium">✅ Potensi penghasilan 3-5 juta per keberangkatan</p>
+                        <p class="font-medium">✅ Cara cari jamaah tanpa harus jualan agresif</p>
+                        <p class="font-medium">✅ Studi kasus peserta yang sudah berhasil</p>
+                    </div>
+                </div>
+
+                <div class="bg-white/30 p-6 rounded-lg mb-8 text-gray-800">
+                    <p class="font-bold mb-4">🎉 Webinar Gratis - Rezeki dari Jalan Sunnah: Jadi Tour Leader Umroh & Dapatkan Penghasilan 3-5 Juta/Bulan</p>
+                    <p class="font-medium">📅 Sabtu, 24 Mei 2025</p>
+                    <p class="font-medium">⏰ Pukul 09:00 WIB</p>
+                    <p class="font-medium">📍 Online via Zoom Meeting</p>
+                    <p class="font-medium">⚡ Kuota peserta terbatas!</p>
+                </div>
+
+                <div class="text-gray-800 mb-8">
+                    <p class="mb-4 font-bold">🎁 MASIH RAGU ? </p>
+                    <div class="space-y-2 bg-white/30 p-6 rounded-lg">
+                        <p class="font-medium">Bayangkan... Anda bisa ibadah, bantu sesama, dan pulang bawa rezeki.</p>
+                        <p class="font-medium">Tapi jika terus menunda, peluang ini bisa lewat begitu saja. Atau… diambil orang lain yang lebih dulu bergerak.</p>
+                        <p class="font-medium">🕌 Jalan ke Tanah Suci bisa terbuka dari sini. Anda tinggal melangkah.</p>
+                    </div>
+                </div>
+            
+
+                <div class="text-center">
+                    <a href="#daftar" 
+                       class="inline-block px-8 py-4 bg-gray-900 text-white font-poppins font-bold rounded-lg hover:bg-gray-800 hover:shadow-2xl transition-all duration-300 text-lg md:text-xl">
+                        [DAFTAR SEKARANG - GRATIS]
+                    </a>
                 </div>
             </div>
         </div>
@@ -142,7 +185,7 @@
 
                     <!-- Form Submit Button -->
                     <button type="submit" 
-                            onclick="submitToWhatsApp(); return false;"
+                            onclick="handleSubmit(event)"
                             class="w-full py-4 bg-white text-[#D4AF37] font-poppins font-bold rounded-lg hover:shadow-xl transition-all duration-300 border-2 border-[#D4AF37]">
                         Daftar Sekarang
                     </button>
@@ -159,33 +202,36 @@
             otherCity.required = this.value === 'other';
         });
 
-        // WhatsApp Submission Handler
-        function submitToWhatsApp() {
-            const form = document.querySelector('form');
-            const name = form.querySelector('[name="name"]').value;
-            const gender = form.querySelector('[name="gender"]:checked').value;
-            const email = form.querySelector('[name="email"]').value;
-            const whatsapp = form.querySelector('[name="whatsapp"]').value;
-            const citySelect = form.querySelector('[name="city"]');
-            const city = citySelect.value === 'other' ? form.querySelector('[name="other_city"]').value : citySelect.options[citySelect.selectedIndex].text;
-            const source = form.querySelector('[name="source"]');
-            const sourceInfo = source.options[source.selectedIndex].text;
-
+        // Form Submission Handler
+        function handleSubmit(event) {
+            event.preventDefault();
+            const form = event.target.closest('form');
+            
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
 
-            const message = `Assalamualaikum, saya ingin mendaftar webinar.%0A%0A` +
-                          `*Data Pendaftar*%0A` +
-                          `Nama: ${name}%0A` +
-                          `Jenis Kelamin: ${gender === 'male' ? 'Pria' : 'Wanita'}%0A` +
-                          `Email: ${email}%0A` +
-                          `WhatsApp: ${whatsapp}%0A` +
-                          `Kota: ${city}%0A` +
-                          `Sumber Informasi: ${sourceInfo}`;
-
-            window.open(`https://wa.me/62811935093?text=${message}`, '_blank');
+            // Submit form via AJAX
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Open WhatsApp link
+                    window.open('https://bit.ly/webinarseriestourleader', '_blank');
+                    
+                    // Show success message
+                    form.reset();
+                    window.location.href = '#daftar';
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
