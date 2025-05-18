@@ -213,25 +213,31 @@
             }
 
             // Submit form via AJAX
+            const formData = new FormData(form);
             fetch(form.action, {
                 method: 'POST',
-                body: new FormData(form),
+                body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Open WhatsApp link
-                    window.open('https://bit.ly/webinarseriestourleader', '_blank');
+                    // Redirect to WhatsApp
+                    window.location.href = 'https://bit.ly/webinarseriestourleader';
                     
-                    // Show success message
-                    form.reset();
-                    window.location.href = '#daftar';
+                    // Reset form and show success message
+                    setTimeout(() => {
+                        form.reset();
+                        window.location.href = '#daftar';
+                    }, 100);
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan, silakan coba lagi.');
+            });
         }
     </script>
 </body>
