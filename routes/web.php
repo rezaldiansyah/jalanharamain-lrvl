@@ -5,8 +5,9 @@ use App\Http\Controllers\WebinarController;
 use App\Helpers\Cities;
 
 Route::get('/', function () {
-    return view('coming-soon');
-});
+    $cities = Cities::getIndonesianCities();
+    return view('webinar', compact('cities'));
+})->name('home');
 
 Route::get('/webinar', function () {
     $cities = Cities::getIndonesianCities();
