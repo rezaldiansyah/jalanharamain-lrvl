@@ -13,6 +13,7 @@ class Cities
             'Medan' => 'Medan',
             'Semarang' => 'Semarang',
             'Makassar' => 'Makassar',
+            'Depok' => 'Depok',
             // tambahkan kota lainnya
         ];
     }
