@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  # Traefik Reverse Proxy
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"  # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker/traefik:/etc/traefik
+      - ./docker/ssl:/ssl
+    command:
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.letsencrypt.acme.email=your-email@example.com
+      - --certificatesresolvers.letsencrypt.acme.storage=/ssl/acme.json
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+    networks:
+      - laravel-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: jalanharamaindb
+      POSTGRES_USER: laravel_user
+      POSTGRES_PASSWORD: laravel_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - laravel-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U laravel_user -d jalanharamain"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Laravel Application
+  laravel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - .:/var/www
+      - laravel_storage:/var/www/storage
+      - laravel_logs:/var/www/storage/logs
+    networks:
+      - laravel-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.laravel.rule=Host(`jalanharamain.local`)"
+      - "traefik.http.routers.laravel.entrypoints=web"
+      - "traefik.http.routers.laravel-secure.rule=Host(`jalanharamain.local`)"
+      - "traefik.http.routers.laravel-secure.entrypoints=websecure"
+      - "traefik.http.routers.laravel-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.services.laravel.loadbalancer.server.port=80"
+
+  # Redis (Optional)
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - laravel-network
+
+volumes:
+  postgres_data:
+    driver: local
+  laravel_storage:
+    driver: local
+  laravel_logs:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  laravel-network:
+    driver: bridge

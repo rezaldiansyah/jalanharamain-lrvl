@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: jalanharamaindb
+      POSTGRES_USER: sail
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  laravel:
+    build: .
+    container_name: laravel-app
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    volumes:
+      - .:/var/www
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=postgres
+      - DB_DATABASE=jalanharamain
+      - DB_USERNAME=laravel_user
+      - DB_PASSWORD=laravel_password
+
+volumes:
+  postgres_data:
+
+
+## Langkah 4: Docker Compose Sederhana (Setelah Docker terinstall)
+
+Jika Anda lebih suka setup manual, buat `docker-compose.yml` yang lebih sederhana:
+```yaml
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: jalanharamain
+      POSTGRES_USER: laravel_user
+      POSTGRES_PASSWORD: laravel_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  laravel:
+    build: .
+    container_name: laravel-app
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    volumes:
+      - .:/var/www
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=postgres
+      - DB_DATABASE=jalanharamain
+      - DB_USERNAME=laravel_user
+      - DB_PASSWORD=laravel_password
+
+volumes:
+  postgres_data:
+```
