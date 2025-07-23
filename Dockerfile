@@ -44,4 +44,4 @@ RUN chown -R www-data:www-data /var/www && \
 
 # Start supervisor
 # CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
-# CMD php artisan serve --host=0.0.0.0 --port=8002#
+CMD php artisan serve --host=0.0.0.0 --port=8002
