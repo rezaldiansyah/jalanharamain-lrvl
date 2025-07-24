@@ -5,6 +5,7 @@ use App\Http\Controllers\WebinarController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LeadMagnetController;
+use App\Http\Controllers\AgenController;
 use App\Helpers\Cities;
 
 Route::get('/', function () {
@@ -32,6 +33,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Lead Magnet Routes
 Route::post('/lead-magnet/register-ebook', [LeadMagnetController::class, 'registerEbook'])->name('lead-magnet.register-ebook');
+
+// Agen Routes - untuk calon-agen dan agen
+Route::prefix('agen')->name('agen.')->middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [AgenController::class, 'dashboard'])->name('dashboard');
+    Route::get('/ebook-gratis', [AgenController::class, 'ebookGratis'])->name('ebook-gratis');
+});
 
 // Admin Routes dengan middleware
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {

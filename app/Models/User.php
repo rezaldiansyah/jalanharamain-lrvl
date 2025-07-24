@@ -34,4 +34,21 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+    // Tambahan method untuk role management
+    public function isCalagenAgen()
+    {
+        return $this->role === 'calon-agen';
+    }
+
+    public function isAgen()
+    {
+        return $this->role === 'agen';
+    }
+
+    // 2. Update Model User untuk Method canAccessEbook()
+    public function canAccessEbook()
+    {
+        return in_array($this->role, ['calon-agen', 'agen']);
+    }
 }

@@ -24,8 +24,13 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             
-            if (Auth::user()->isAdmin()) {
+            $user = Auth::user();
+            
+            // Redirect berdasarkan role
+            if ($user->isAdmin()) {
                 return redirect()->intended('/admin/dashboard');
+            } elseif ($user->isCalagenAgen() || $user->isAgen()) {
+                return redirect()->intended('/agen/dashboard');
             }
             
             return redirect()->intended('/');
