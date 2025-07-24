@@ -119,6 +119,35 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        
+        .sidebar ul li.has-submenu {
+            position: relative;
+        }
+        
+        .sidebar ul li.has-submenu > a::after {
+            content: '▼';
+            float: right;
+            transition: transform 0.3s;
+        }
+        
+        .sidebar ul li.has-submenu.open > a::after {
+            transform: rotate(180deg);
+        }
+        
+        .submenu {
+            display: none;
+            background-color: #f1f3f4;
+            padding-left: 1rem;
+        }
+        
+        .submenu.show {
+            display: block;
+        }
+        
+        .submenu li a {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -138,6 +167,13 @@
             <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
             <li><a href="{{ route('admin.partners') }}">Travel Rekanan</a></li>
             <li><a href="{{ route('admin.packages') }}">Paket Perjalanan</a></li>
+            <li class="has-submenu">
+                <a href="#" onclick="toggleSubmenu(this)">Lead Magnet</a>
+                <ul class="submenu">
+                    <li><a href="{{ route('admin.lead-magnet.calagen-ebook') }}">Calon Agen - Ebook</a></li>
+                    <li><a href="{{ route('admin.lead-magnet.calagen-webinar') }}">Calon Agen - Webinar</a></li>
+                </ul>
+            </li>
             <li><a href="{{ route('home') }}">Lihat Website</a></li>
         </ul>
     </aside>
@@ -172,3 +208,13 @@
     </main>
 </body>
 </html>
+
+<script>
+    function toggleSubmenu(element) {
+        const submenu = element.nextElementSibling;
+        const parentLi = element.parentElement;
+        
+        submenu.classList.toggle('show');
+        parentLi.classList.toggle('open');
+    }
+</script>
