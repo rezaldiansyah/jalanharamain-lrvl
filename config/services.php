@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'bunny' => [
+        'storage_zone' => env('BUNNY_STORAGE_ZONE'),
+        'access_key' => env('BUNNY_ACCESS_KEY'),
+        'region' => env('BUNNY_REGION', ''), // Add this line
+        'pull_zone' => env('BUNNY_PULL_ZONE'),
+    ],
 ];

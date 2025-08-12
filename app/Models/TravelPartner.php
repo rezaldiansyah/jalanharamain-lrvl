@@ -16,6 +16,9 @@ class TravelPartner extends Model
         'phone',
         'email',
         'address',
+        'ppiu_number',
+        'pihk_number',
+        'user_id',
         'is_active',
     ];
 
@@ -26,5 +29,10 @@ class TravelPartner extends Model
     public function travelPackages()
     {
         return $this->hasMany(TravelPackage::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

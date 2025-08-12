@@ -35,7 +35,6 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
-    // Tambahan method untuk role management
     public function isCalagenAgen()
     {
         return $this->role === 'calon-agen';
@@ -46,9 +45,20 @@ class User extends Authenticatable
         return $this->role === 'agen';
     }
 
-    // 2. Update Model User untuk Method canAccessEbook()
+    // Tambahan method untuk role travel
+    public function isTravel()
+    {
+        return $this->role === 'travel';
+    }
+
     public function canAccessEbook()
     {
         return in_array($this->role, ['calon-agen', 'agen']);
+    }
+
+    // Relasi dengan travel partner
+    public function travelPartner()
+    {
+        return $this->hasOne(TravelPartner::class);
     }
 }

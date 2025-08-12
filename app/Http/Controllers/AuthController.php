@@ -31,6 +31,8 @@ class AuthController extends Controller
                 return redirect()->intended('/admin/dashboard');
             } elseif ($user->isCalagenAgen() || $user->isAgen()) {
                 return redirect()->intended('/agen/dashboard');
+            } elseif ($user->isTravel()) {
+                return redirect()->intended('/travel/dashboard');
             }
             
             return redirect()->intended('/');

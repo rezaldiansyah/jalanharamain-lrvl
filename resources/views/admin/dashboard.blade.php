@@ -164,14 +164,15 @@
     
     <aside class="sidebar">
         <ul>
-            <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ route('admin.partners') }}">Travel Rekanan</a></li>
-            <li><a href="{{ route('admin.packages') }}">Paket Perjalanan</a></li>
-            <li class="has-submenu">
-                <a href="#" onclick="toggleSubmenu(this)">Lead Magnet</a>
-                <ul class="submenu">
-                    <li><a href="{{ route('admin.lead-magnet.calagen-ebook') }}">Calon Agen - Ebook</a></li>
-                    <li><a href="{{ route('admin.lead-magnet.calagen-webinar') }}">Calon Agen - Webinar</a></li>
+            <li><a href="{{ route('admin.dashboard') }}">📊 Dashboard</a></li>
+            <li><a href="{{ route('admin.partners') }}">🤝 Travel Rekanan</a></li>
+            <li><a href="{{ route('admin.packages') }}">📦 Paket Perjalanan</a></li>
+            <li><a href="{{ route('admin.ebooks') }}">📚 Manajemen E-Book</a></li>
+            <li>
+                <a href="#" onclick="toggleSubmenu('leadMagnetSubmenu')">🧲 Lead Magnet</a>
+                <ul id="leadMagnetSubmenu" class="submenu">
+                    <li><a href="{{ route('admin.lead-magnet.calagen-ebook') }}">📖 Calon Agen - Ebook</a></li>
+                    <li><a href="{{ route('admin.lead-magnet.calagen-webinar') }}">🎥 Calon Agen - Webinar</a></li>
                 </ul>
             </li>
             <li><a href="{{ route('home') }}">Lihat Website</a></li>
