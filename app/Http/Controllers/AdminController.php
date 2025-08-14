@@ -7,6 +7,7 @@ use App\Models\TravelPartner;
 use App\Models\TravelPackage;
 use App\Models\Ebook;
 use App\Models\User;
+use App\Models\Webinar;
 use App\Services\BunnyService;
 use Illuminate\Support\Facades\Hash;
 
@@ -163,10 +164,12 @@ class AdminController extends Controller
         $validated = $request->validate([
             'travel_partner_id' => 'required|exists:travel_partners,id',
             'name' => 'required|string|max:255',
+            'category' => 'required|in:umroh,haji_khusus,wisata_halal,lainnya',
             'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'destination' => 'required|string|max:255',
             'duration_days' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0|max:999999999999',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
             'max_participants' => 'required|integer|min:1',
@@ -175,10 +178,74 @@ class AdminController extends Controller
             'excludes' => 'nullable|string',
             'is_active' => 'boolean',
         ]);
-
+    
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images/packages'), $imageName);
+            $validated['image'] = 'images/packages/' . $imageName;
+        }
+    
         TravelPackage::create($validated);
         
         return redirect()->route('admin.packages')->with('success', 'Paket perjalanan berhasil ditambahkan!');
+    }
+
+    public function updatePackage(Request $request, TravelPackage $package)
+    {
+        $validated = $request->validate([
+            'travel_partner_id' => 'required|exists:travel_partners,id',
+            'name' => 'required|string|max:255',
+            'category' => 'required|in:umroh,haji_khusus,wisata_halal,lainnya',
+            'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'destination' => 'required|string|max:255',
+            'duration_days' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0|max:999999999999',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'max_participants' => 'required|integer|min:1',
+            'itinerary' => 'nullable|string',
+            'includes' => 'nullable|string',
+            'excludes' => 'nullable|string',
+            'is_active' => 'boolean',
+        ]);
+    
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($package->image && file_exists(public_path($package->image))) {
+                unlink(public_path($package->image));
+            }
+            
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images/packages'), $imageName);
+            $validated['image'] = 'images/packages/' . $imageName;
+        }
+    
+        $package->update($validated);
+        
+        return redirect()->route('admin.packages')->with('success', 'Paket perjalanan berhasil diperbarui!');
+    }
+
+    public function editPackage(TravelPackage $package)
+    {
+        $partners = TravelPartner::where('is_active', true)->get();
+        return view('admin.packages.edit', compact('package', 'partners'));
+    }
+
+    public function destroyPackage(TravelPackage $package)
+    {
+        // Delete image if exists
+        if ($package->image && file_exists(public_path($package->image))) {
+            unlink(public_path($package->image));
+        }
+        
+        $package->delete();
+        
+        return redirect()->route('admin.packages')->with('success', 'Paket perjalanan berhasil dihapus!');
     }
 
      // E-books Management
@@ -266,5 +333,122 @@ class AdminController extends Controller
         $ebook->delete();
 
         return redirect()->route('admin.ebooks')->with('success', 'E-book berhasil dihapus!');
+    }
+
+    public function duplicatePackage(TravelPackage $package)
+    {
+        // Buat salinan data paket
+        $duplicatedData = $package->toArray();
+        
+        // Hapus ID dan timestamps untuk membuat record baru
+        unset($duplicatedData['id'], $duplicatedData['created_at'], $duplicatedData['updated_at']);
+        
+        // Modifikasi nama untuk menunjukkan ini adalah duplikat
+        $duplicatedData['name'] = $duplicatedData['name'] . ' (Copy)';
+        
+        // Set status menjadi tidak aktif untuk review
+        $duplicatedData['is_active'] = false;
+        
+        // Handle duplikasi gambar jika ada
+        if ($package->image && file_exists(public_path($package->image))) {
+            $originalImagePath = public_path($package->image);
+            $imageInfo = pathinfo($package->image);
+            $newImageName = time() . '_copy_' . $imageInfo['basename'];
+            $newImagePath = public_path('images/packages/' . $newImageName);
+            
+            // Copy file gambar
+            if (copy($originalImagePath, $newImagePath)) {
+                $duplicatedData['image'] = 'images/packages/' . $newImageName;
+            } else {
+                // Jika gagal copy, hapus referensi gambar
+                $duplicatedData['image'] = null;
+            }
+        }
+        
+        // Buat paket baru
+        $newPackage = TravelPackage::create($duplicatedData);
+        
+        return redirect()->route('admin.packages.edit', $newPackage)
+                        ->with('success', 'Paket berhasil diduplikat! Silakan review dan edit sesuai kebutuhan.');
+    }
+    
+    // Tambah methods:
+    public function webinars()
+    {
+        $webinars = Webinar::withCount('registrations')->latest()->paginate(10);
+        return view('admin.webinars.index', compact('webinars'));
+    }
+    
+    public function createWebinar()
+    {
+        return view('admin.webinars.create');
+    }
+    
+    public function storeWebinar(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'date' => 'required|date|after:today',
+            'time' => 'required',
+            'platform' => 'required|string',
+            'meeting_link' => 'nullable|url',
+            'max_participants' => 'nullable|integer|min:1',
+            'template' => 'required|in:webinar,webinardua',
+            'is_free' => 'boolean',
+            'price' => 'nullable|numeric|min:0',
+            'custom_content' => 'nullable|json'
+        ]);
+        
+        // Set is_free berdasarkan harga
+        $validated['is_free'] = empty($validated['price']) || $validated['price'] == 0;
+        
+        $webinar = Webinar::create($validated);
+        
+        return redirect()->route('admin.webinars.index')
+            ->with('success', 'Webinar berhasil dibuat!')
+            ->with('webinar_url', $webinar->getPublicUrl());
+    }
+    
+    public function editWebinar(Webinar $webinar)
+    {
+        return view('admin.webinars.edit', compact('webinar'));
+    }
+    
+    public function updateWebinar(Request $request, Webinar $webinar)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
+            'description' => 'required|string',
+            'date' => 'required|date',
+            'time' => 'required',
+            'platform' => 'required|string',
+            'meeting_link' => 'nullable|url',
+            'max_participants' => 'nullable|integer|min:1',
+            'template' => 'required|in:webinar,webinardua',
+            'is_free' => 'boolean',
+            'price' => 'nullable|numeric|min:0',
+            'custom_content' => 'nullable|json'
+        ]);
+        
+        // Set is_free berdasarkan harga
+        $validated['is_free'] = empty($validated['price']) || $validated['price'] == 0;
+        
+        // Set status berdasarkan checkbox
+        $validated['status'] = $request->has('is_active') ? 'published' : 'draft';
+        
+        $webinar->update($validated);
+        
+        return redirect()->route('admin.webinars.index')
+            ->with('success', 'Webinar berhasil diperbarui!');
+    }
+    
+    public function destroyWebinar(Webinar $webinar)
+    {
+        $webinar->delete();
+        
+        return redirect()->route('admin.webinars.index')
+            ->with('success', 'Webinar berhasil dihapus!');
     }
 }

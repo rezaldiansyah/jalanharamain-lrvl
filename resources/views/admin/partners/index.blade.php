@@ -5,7 +5,12 @@
 @section('content')
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Travel Rekanan</h2>
+        <div class="d-flex align-items-center">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary me-3">
+                <i class="fas fa-arrow-left"></i> Dashboard
+            </a>
+            <h2 class="mb-0">Travel Rekanan</h2>
+        </div>
         <a href="{{ route('admin.partners.create') }}" class="btn btn-primary">
             <i class="fas fa-plus"></i> Tambah Travel Rekanan
         </a>

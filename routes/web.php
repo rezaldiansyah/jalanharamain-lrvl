@@ -7,11 +7,11 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LeadMagnetController;
 use App\Http\Controllers\AgenController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\HomeController; // Tambahkan ini
 use App\Helpers\Cities;
 
-Route::get('/', function () {
-    return view('utama');
-})->name('home');
+// Update route home
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/webinar', function () {
     $cities = Cities::getIndonesianCities();
@@ -45,7 +45,7 @@ Route::prefix('agen')->name('agen.')->middleware(['auth'])->group(function () {
 });
 
 // Admin Routes dengan middleware
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     
     // Travel Partners - Manual Routes (mengganti resource route)
@@ -61,6 +61,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/packages', [AdminController::class, 'packages'])->name('packages');
     Route::get('/packages/create', [AdminController::class, 'createPackage'])->name('packages.create');
     Route::post('/packages', [AdminController::class, 'storePackage'])->name('packages.store');
+    Route::get('/packages/{package}/edit', [AdminController::class, 'editPackage'])->name('packages.edit');
+    Route::put('/packages/{package}', [AdminController::class, 'updatePackage'])->name('packages.update');
+    Route::post('/packages/{package}/duplicate', [AdminController::class, 'duplicatePackage'])->name('packages.duplicate');
+    Route::delete('/packages/{package}', [AdminController::class, 'destroyPackage'])->name('packages.destroy');
     
     // Lead Magnet Routes
     Route::prefix('lead-magnet')->name('lead-magnet.')->group(function () {
@@ -76,6 +80,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::put('/ebooks/{ebook}', [AdminController::class, 'updateEbook'])->name('ebooks.update');
     Route::delete('/ebooks/{ebook}', [AdminController::class, 'destroyEbook'])->name('ebooks.destroy');
 
+    // Tambah di dalam admin group:
+    // Webinar management - ubah dari route yang ada
+    Route::get('/webinars', [AdminController::class, 'webinars'])->name('webinars.index');
+    Route::get('/webinars/create', [AdminController::class, 'createWebinar'])->name('webinars.create');
+    Route::post('/webinars', [AdminController::class, 'storeWebinar'])->name('webinars.store');
+    Route::get('/webinars/{webinar}/edit', [AdminController::class, 'editWebinar'])->name('webinars.edit');
+    Route::put('/webinars/{webinar}', [AdminController::class, 'updateWebinar'])->name('webinars.update');
+    Route::delete('/webinars/{webinar}', [AdminController::class, 'destroyWebinar'])->name('webinars.destroy');
 });
 
 Route::post('/webinar/register', [WebinarController::class, 'register'])->name('webinar.register');
@@ -196,3 +208,16 @@ Route::get('/fix-bunny-urls', function() {
         'fixed_urls' => $fixed
     ]);
 });
+
+// Hapus rute yang ada dan ganti dengan ini:
+// Route dinamis untuk webinar (letakkan di akhir file sebelum catch-all routes)
+Route::get('webinar/{type}/{date}', [WebinarController::class, 'showBySlug'])
+    ->where('type', 'free|paid')
+    ->where('date', '[0-9]{8}')
+    ->name('webinar.show');
+
+// Atau route yang lebih fleksibel:
+// Hapus baris ini:
+// Route::get('{slug}', [WebinarController::class, 'showBySlug'])
+//     ->where('slug', 'webinar/.*')
+//     ->name('webinar.dynamic');

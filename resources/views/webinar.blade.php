@@ -18,9 +18,12 @@
         <div class="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] py-12 md:py-20">
             <div class="container mx-auto px-4 max-w-4xl">
                 <h1 class="font-playfair text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 text-center mb-6 leading-tight">
-                    Bisa Umroh Tiap Bulan dan Penghasilan Juga, Mau?
+                    {{ $webinar->title ?? 'Bisa Umroh Tiap Bulan dan Penghasilan Juga, Mau?' }}
                 </h1>
                 <div class="text-gray-800 text-center space-y-4 md:space-y-6 mb-8 md:mb-12">
+                    {!! nl2br(e($webinar->description ?? 'Default description...')) !!}
+                </div>
+               <!-- <div class="text-gray-800 text-center space-y-4 md:space-y-6 mb-8 md:mb-12">
                     <p class="text-lg md:text-xl font-medium">Ingin ke Tanah Suci tapi masih terhalang biaya?</p>
                     <p class="text-base md:text-lg">Bagaimana kalau justru Anda dibayar untuk berangkat ke sana?</p>
                     <p class="text-base md:text-lg">Banyak orang ingin ke Mekkah. Tapi hanya sedikit yang tahu jalannya.</p>
@@ -67,7 +70,7 @@
                         <p class="font-medium">🕌 Jalan ke Tanah Suci bisa terbuka dari sini. Anda tinggal melangkah.</p>
                     </div>
                 </div>
-            
+                -->
 
                 <div class="text-center">
                     <a href="#daftar" 
@@ -183,6 +186,8 @@
                         </select>
                     </div>
 
+                    <!-- Hidden input untuk webinar ID -->
+                    <input type="hidden" name="webinar_id" value="{{ $webinar->id ?? '' }}">
                     <!-- Form Submit Button -->
                     <button type="submit" 
                             onclick="handleSubmit(event)"

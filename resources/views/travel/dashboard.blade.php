@@ -89,9 +89,15 @@
                         <a href="{{ route('travel.packages.create') }}" class="btn btn-primary">
                             <i class="fas fa-plus me-1"></i>Tambah Paket Baru
                         </a>
-                        <a href="{{ route('travel.packages') }}" class="btn btn-secondary">
-                            <i class="fas fa-list me-1"></i>Lihat Semua Paket
-                        </a>
+                        <div class="col-md-6">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Kelola Paket</h5>
+                                    <p class="card-text">Tambah dan kelola paket travel Anda</p>
+                                    <a href="{{ route('travel.packages') }}" class="btn btn-primary">Kelola Paket</a>
+                                </div>
+                            </div>
+                        </div>
                         <a href="{{ route('travel.profile') }}" class="btn btn-outline-primary">
                             <i class="fas fa-eye me-1"></i>Lihat Profil Lengkap
                         </a>

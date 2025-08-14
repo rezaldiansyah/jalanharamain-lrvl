@@ -77,36 +77,79 @@ class TravelController extends Controller
 
     public function storePackage(Request $request)
     {
-        $user = Auth::user();
-        $travelPartner = TravelPartner::where('user_id', $user->id)->first();
-        
-        if (!$travelPartner) {
-            return redirect()->route('travel.profile.create')
-                ->with('error', 'Profil travel partner tidak ditemukan.');
-        }
-
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'category' => 'required|in:umroh,haji_khusus,wisata_halal,lainnya',
             'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'destination' => 'required|string|max:255',
             'duration_days' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-            'start_date' => 'required|date|after:today',
+            'price' => 'required|numeric|min:0|max:999999999999',
+            'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
             'max_participants' => 'required|integer|min:1',
             'itinerary' => 'nullable|string',
             'includes' => 'nullable|string',
             'excludes' => 'nullable|string',
-            'is_active' => 'boolean'
+            'is_active' => 'boolean',
         ]);
-
-        $validated['travel_partner_id'] = $travelPartner->id;
-        $validated['is_active'] = $request->has('is_active');
-
+    
+        // Set travel partner ID dari user yang login
+        $validated['travel_partner_id'] = auth()->user()->travelPartner->id;
+    
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images/packages'), $imageName);
+            $validated['image'] = 'images/packages/' . $imageName;
+        }
+    
         TravelPackage::create($validated);
+        
+        return redirect()->route('travel.packages')->with('success', 'Paket perjalanan berhasil ditambahkan!');
+    }
 
-        return redirect()->route('travel.packages')
-            ->with('success', 'Paket travel berhasil ditambahkan.');
+    public function updatePackage(Request $request, TravelPackage $package)
+    {
+        // Pastikan paket milik travel partner yang login
+        if ($package->travel_partner_id !== auth()->user()->travelPartner->id) {
+            abort(403, 'Unauthorized');
+        }
+    
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|in:umroh,haji_khusus,wisata_halal,lainnya',
+            'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'destination' => 'required|string|max:255',
+            'duration_days' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0|max:999999999999',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'max_participants' => 'required|integer|min:1',
+            'itinerary' => 'nullable|string',
+            'includes' => 'nullable|string',
+            'excludes' => 'nullable|string',
+            'is_active' => 'boolean',
+        ]);
+    
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($package->image && file_exists(public_path($package->image))) {
+                unlink(public_path($package->image));
+            }
+            
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images/packages'), $imageName);
+            $validated['image'] = 'images/packages/' . $imageName;
+        }
+    
+        $package->update($validated);
+        
+        return redirect()->route('travel.packages')->with('success', 'Paket perjalanan berhasil diperbarui!');
     }
 
     public function editPackage(TravelPackage $package)
@@ -117,40 +160,8 @@ class TravelController extends Controller
         if (!$travelPartner || $package->travel_partner_id !== $travelPartner->id) {
             abort(403, 'Unauthorized');
         }
-
+    
         return view('travel.packages.edit', compact('package', 'travelPartner'));
-    }
-
-    public function updatePackage(Request $request, TravelPackage $package)
-    {
-        $user = Auth::user();
-        $travelPartner = TravelPartner::where('user_id', $user->id)->first();
-        
-        if (!$travelPartner || $package->travel_partner_id !== $travelPartner->id) {
-            abort(403, 'Unauthorized');
-        }
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'destination' => 'required|string|max:255',
-            'duration_days' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'max_participants' => 'required|integer|min:1',
-            'itinerary' => 'nullable|string',
-            'includes' => 'nullable|string',
-            'excludes' => 'nullable|string',
-            'is_active' => 'boolean'
-        ]);
-
-        $validated['is_active'] = $request->has('is_active');
-
-        $package->update($validated);
-
-        return redirect()->route('travel.packages')
-            ->with('success', 'Paket travel berhasil diperbarui.');
     }
 
     public function destroyPackage(TravelPackage $package)

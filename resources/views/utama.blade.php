@@ -738,53 +738,84 @@ body {
         <p class="section-subtitle">Pilihan paket terbaik yang telah dipercaya oleh ribuan jamaah dari seluruh Indonesia.</p>
         
         <div class="packages-grid">
-            <div class="package-card">
-                <div class="package-image">🕌</div>
-                <div class="package-content">
-                    <h3 class="package-title">Umroh Ekonomis 9 Hari</h3>
-                    <div class="package-price">Rp 25.000.000</div>
-                    <ul class="package-features">
-                        <li>Hotel bintang 3 di Makkah & Madinah</li>
-                        <li>Transportasi AC selama di Arab Saudi</li>
-                        <li>Makan 3x sehari</li>
-                        <li>Pembimbing berpengalaman</li>
-                        <li>Visa & handling</li>
-                    </ul>
-                    <button class="package-btn">Pilih Paket</button>
+            @forelse($popularPackages as $package)
+                <div class="package-card">
+                    <div class="package-image">
+                        @if(str_contains(strtolower($package->destination), 'makkah') || str_contains(strtolower($package->destination), 'madinah') || str_contains(strtolower($package->name), 'umroh'))
+                            🕌
+                        @elseif(str_contains(strtolower($package->destination), 'turki'))
+                            🌍
+                        @else
+                            ⭐
+                        @endif
+                    </div>
+                    <div class="package-content">
+                        <h3 class="package-title">{{ $package->name }}</h3>
+                        <div class="package-price">Rp {{ number_format($package->price, 0, ',', '.') }}</div>
+                        <ul class="package-features">
+                            <li>{{ $package->destination }}</li>
+                            <li>Durasi {{ $package->duration_days }} hari</li>
+                            @if($package->travelPartner)
+                                <li>by {{ $package->travelPartner->company_name }}</li>
+                            @endif
+                            @if($package->description)
+                                <li>{{ Str::limit($package->description, 50) }}</li>
+                            @endif
+                            <li>Tanggal: {{ \Carbon\Carbon::parse($package->start_date)->format('d M Y') }}</li>
+                        </ul>
+                        <button class="package-btn" onclick="showPackageDetail({{ $package->id }})">Pilih Paket</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="package-card">
-                <div class="package-image">⭐</div>
-                <div class="package-content">
-                    <h3 class="package-title">Umroh VIP 12 Hari</h3>
-                    <div class="package-price">Rp 45.000.000</div>
-                    <ul class="package-features">
-                        <li>Hotel bintang 5 dekat Haram</li>
-                        <li>Transportasi VIP</li>
-                        <li>Buffet premium</li>
-                        <li>City tour Madinah</li>
-                        <li>Ziarah lengkap</li>
-                    </ul>
-                    <button class="package-btn">Pilih Paket</button>
+            @empty
+                <!-- Fallback ke paket statis jika belum ada data -->
+                <div class="package-card">
+                    <div class="package-image">🕌</div>
+                    <div class="package-content">
+                        <h3 class="package-title">Umroh Ekonomis 9 Hari</h3>
+                        <div class="package-price">Rp 25.000.000</div>
+                        <ul class="package-features">
+                            <li>Hotel bintang 3 di Makkah & Madinah</li>
+                            <li>Transportasi AC selama di Arab Saudi</li>
+                            <li>Makan 3x sehari</li>
+                            <li>Pembimbing berpengalaman</li>
+                            <li>Visa & handling</li>
+                        </ul>
+                        <button class="package-btn">Pilih Paket</button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="package-card">
-                <div class="package-image">🌍</div>
-                <div class="package-content">
-                    <h3 class="package-title">Wisata Halal Turki</h3>
-                    <div class="package-price">Rp 35.000.000</div>
-                    <ul class="package-features">
-                        <li>Istanbul, Cappadocia, Pamukkale</li>
-                        <li>Hotel halal bintang 4</li>
-                        <li>Makanan halal terjamin</li>
-                        <li>Panduan wisata muslim</li>
-                        <li>Shopping tour</li>
-                    </ul>
-                    <button class="package-btn">Pilih Paket</button>
+                
+                <div class="package-card">
+                    <div class="package-image">⭐</div>
+                    <div class="package-content">
+                        <h3 class="package-title">Umroh VIP 12 Hari</h3>
+                        <div class="package-price">Rp 45.000.000</div>
+                        <ul class="package-features">
+                            <li>Hotel bintang 5 dekat Haram</li>
+                            <li>Transportasi VIP</li>
+                            <li>Buffet premium</li>
+                            <li>City tour Madinah</li>
+                            <li>Ziarah lengkap</li>
+                        </ul>
+                        <button class="package-btn">Pilih Paket</button>
+                    </div>
                 </div>
-            </div>
+                
+                <div class="package-card">
+                    <div class="package-image">🌍</div>
+                    <div class="package-content">
+                        <h3 class="package-title">Wisata Halal Turki</h3>
+                        <div class="package-price">Rp 35.000.000</div>
+                        <ul class="package-features">
+                            <li>Istanbul, Cappadocia, Pamukkale</li>
+                            <li>Hotel halal bintang 4</li>
+                            <li>Makanan halal terjamin</li>
+                            <li>Panduan wisata muslim</li>
+                            <li>Shopping tour</li>
+                        </ul>
+                        <button class="package-btn">Pilih Paket</button>
+                    </div>
+                </div>
+            @endforelse
         </div>
     </div>
 </section>
@@ -871,6 +902,17 @@ document.getElementById('searchForm').addEventListener('submit', function(e) {
     e.preventDefault();
     alert('Fitur pencarian akan segera tersedia!');
 });
+</script>
+
+<script>
+function showPackageDetail(packageId) {
+    // Implementasi untuk menampilkan detail paket
+    // Bisa redirect ke halaman detail atau modal
+    alert('Detail paket ID: ' + packageId + ' akan segera tersedia!');
+    
+    // Atau redirect ke halaman detail paket (jika sudah ada)
+    // window.location.href = '/packages/' + packageId;
+}
 </script>
 
 @endsection

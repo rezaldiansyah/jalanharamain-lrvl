@@ -168,6 +168,7 @@
             <li><a href="{{ route('admin.partners') }}">🤝 Travel Rekanan</a></li>
             <li><a href="{{ route('admin.packages') }}">📦 Paket Perjalanan</a></li>
             <li><a href="{{ route('admin.ebooks') }}">📚 Manajemen E-Book</a></li>
+            <li><a href="{{ route('admin.webinars.index') }}">🎥 Manajemen Webinar</a></li>
             <li>
                 <a href="#" onclick="toggleSubmenu('leadMagnetSubmenu')">🧲 Lead Magnet</a>
                 <ul id="leadMagnetSubmenu" class="submenu">
@@ -203,7 +204,9 @@
             <h3>Quick Actions</h3>
             <div style="margin-top: 1rem;">
                 <a href="{{ route('admin.partners.create') }}" class="btn">Tambah Travel Rekanan</a>
-                <a href="{{ route('admin.packages.create') }}" class="btn">Tambah Paket Perjalanan</a>
+                <div class="quick-action">
+                    <a href="{{ route('admin.packages.create') }}" class="btn">Tambah Paket Perjalanan</a>
+                </div>
             </div>
         </div>
     </main>
@@ -218,4 +221,6 @@
         submenu.classList.toggle('show');
         parentLi.classList.toggle('open');
     }
+    // Tambah menu webinar:
+    <li><a href="{{ route('admin.webinars.index') }}">🎥 Manajemen Webinar</a></li>
 </script>
