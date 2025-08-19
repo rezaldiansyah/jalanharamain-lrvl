@@ -49,4 +49,16 @@ class WebinarController extends Controller
 
         return response()->json(['success' => true]);
     }
+    
+    public function index()
+    {
+        // Ambil webinar yang akan diselenggarakan dalam 3 bulan ke depan
+        $webinars = Webinar::where('status', 'published')
+            ->where('date', '>=', now())
+            ->where('date', '<=', now()->addMonths(3))
+            ->orderBy('date', 'asc')
+            ->get();
+            
+        return view('webinars.index', compact('webinars'));
+    }
 }

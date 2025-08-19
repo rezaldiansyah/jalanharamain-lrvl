@@ -58,6 +58,13 @@ class Webinar extends Model
     // Method untuk mendapatkan URL publik
     public function getPublicUrl()
     {
-        return url($this->slug);
+        // Jika sudah ada slug, gunakan slug
+        if ($this->slug) {
+            return url($this->slug);
+        }
+        
+        // Jika belum ada slug, buat dari ID dan title
+        $slug = Str::slug($this->title);
+        return route('webinar.show', ['id' => $this->id, 'slug' => $slug]);
     }
 }

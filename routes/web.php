@@ -90,6 +90,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::delete('/webinars/{webinar}', [AdminController::class, 'destroyWebinar'])->name('webinars.destroy');
 });
 
+// Public webinar routes
+Route::get('/webinars', [WebinarController::class, 'index'])->name('webinars.index');
 Route::post('/webinar/register', [WebinarController::class, 'register'])->name('webinar.register');
 
 // Travel Routes - untuk travel partner

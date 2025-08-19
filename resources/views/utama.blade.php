@@ -613,11 +613,57 @@ body {
     <div class="header-container">
         <a href="{{ route('home') }}" class="logo">JalanHaramain</a>
         
+        <style>
+        /* Tambahkan CSS untuk dropdown menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            border-radius: 6px;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+        
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-weight: 400;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f3f4f5;
+            color: #374da0;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        </style>
+        
         <!-- Desktop Navigation -->
         <nav class="main-nav">
             <a href="{{ route('home') }}" class="nav-link">Beranda</a>
             <a href="#" class="nav-link">Paket Umroh</a>
             <a href="#" class="nav-link">Wisata Halal</a>
+            
+            <!-- Event Dropdown Menu -->
+            <div class="dropdown">
+                <a href="#" class="nav-link">Event</a>
+                <div class="dropdown-content">
+                    <a href="{{ route('webinars.index') }}">Webinar</a>
+                </div>
+            </div>
+            
             <a href="{{ route('pendaftaran.agen') }}" class="nav-link">Daftar Agen</a>
             <a href="{{ route('login') }}" class="nav-link login-btn">Masuk</a>
         </nav>
@@ -633,6 +679,7 @@ body {
                 <a href="{{ route('home') }}">Beranda</a>
                 <a href="#">Paket Umroh</a>
                 <a href="#">Wisata Halal</a>
+                <a href="{{ route('webinars.index') }}">Webinar</a>
                 <a href="{{ route('pendaftaran.agen') }}">Daftar Agen</a>
                 <a href="{{ route('login') }}">Masuk</a>
             </div>
