@@ -157,6 +157,17 @@
                             @enderror
                             <small class="form-text text-muted">Link untuk bergabung ke webinar</small>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="community_link" class="form-label">Link Grup WA/Telegram (Opsional)</label>
+                            <input type="url" class="form-control @error('community_link') is-invalid @enderror" 
+                                   id="community_link" name="community_link" value="{{ old('community_link') }}" 
+                                   placeholder="https://chat.whatsapp.com/xxx atau https://t.me/xxx">
+                            @error('community_link')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <small class="form-text text-muted">Peserta akan diarahkan ke grup ini setelah mendaftar</small>
+                        </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Gambar Banner</label>

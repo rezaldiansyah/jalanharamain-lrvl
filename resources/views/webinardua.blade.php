@@ -257,31 +257,33 @@
                 return;
             }
 
-            // Submit form via AJAX
             const formData = new FormData(form);
             fetch(form.action, {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 }
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Redirect to WhatsApp
-                    window.location.href = 'https://bit.ly/GabungTourLeader';
+                    // Tutup modal
+                    document.getElementById('formModal').classList.remove('show');
                     
-                    // Reset form and show success message
-                    setTimeout(() => {
-                        form.reset();
-                        window.location.href = '#daftar';
-                    }, 100);
+                    // Jika ada community_link dari admin, gunakan itu
+                    // Jika tidak, gunakan link default yang sudah ada
+                    const redirectUrl = data.redirect_url || 'https://bit.ly/GabungTourLeader';
+                    
+                    // Redirect ke grup
+                    window.location.href = redirectUrl;
+                } else {
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Terjadi kesalahan, silakan coba lagi.');
+                alert('Terjadi kesalahan. Silakan coba lagi.');
             });
         }
     </script>

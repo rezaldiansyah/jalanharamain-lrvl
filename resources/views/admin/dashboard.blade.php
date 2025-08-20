@@ -201,11 +201,27 @@
         </div>
         
         <div style="background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-            <h3>Quick Actions</h3>
-            <div style="margin-top: 1rem;">
-                <a href="{{ route('admin.partners.create') }}" class="btn">Tambah Travel Rekanan</a>
-                <div class="quick-action">
-                    <a href="{{ route('admin.packages.create') }}" class="btn">Tambah Paket Perjalanan</a>
+            <h3 style="margin-bottom: 1.5rem; color: #333; font-size: 1.25rem;">Quick Actions</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                <div class="action-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.5rem; border-radius: 12px; text-align: center; transition: transform 0.3s ease;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🤝</div>
+                    <h4 style="color: white; margin-bottom: 0.5rem;">Travel Rekanan</h4>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 1rem;">Kelola mitra travel</p>
+                    <a href="{{ route('admin.partners.create') }}" style="background: rgba(255,255,255,0.2); color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Tambah Baru</a>
+                </div>
+                
+                <div class="action-card" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); padding: 1.5rem; border-radius: 12px; text-align: center; transition: transform 0.3s ease;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📦</div>
+                    <h4 style="color: white; margin-bottom: 0.5rem;">Paket Perjalanan</h4>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 1rem;">Kelola paket wisata</p>
+                    <a href="{{ route('admin.packages.create') }}" style="background: rgba(255,255,255,0.2); color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Tambah Baru</a>
+                </div>
+                
+                <div class="action-card" style="background: linear-gradient(135deg, #fd7e14 0%, #e83e8c 100%); padding: 1.5rem; border-radius: 12px; text-align: center; transition: transform 0.3s ease;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎥</div>
+                    <h4 style="color: white; margin-bottom: 0.5rem;">Webinar</h4>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 1rem;">Kelola webinar</p>
+                    <a href="{{ route('admin.webinars.create') }}" style="background: rgba(255,255,255,0.2); color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Tambah Baru</a>
                 </div>
             </div>
         </div>

@@ -393,6 +393,7 @@ class AdminController extends Controller
             'time' => 'required',
             'platform' => 'required|string',
             'meeting_link' => 'nullable|url',
+            'community_link' => 'nullable|url', // Field baru
             'max_participants' => 'nullable|integer|min:1',
             'template' => 'required|in:webinar,webinardua',
             'is_free' => 'boolean',
@@ -425,6 +426,7 @@ class AdminController extends Controller
             'time' => 'required',
             'platform' => 'required|string',
             'meeting_link' => 'nullable|url',
+            'community_link' => 'nullable|url', // Field baru
             'max_participants' => 'nullable|integer|min:1',
             'template' => 'required|in:webinar,webinardua',
             'is_free' => 'boolean',

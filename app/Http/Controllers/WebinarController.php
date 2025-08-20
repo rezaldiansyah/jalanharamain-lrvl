@@ -36,7 +36,7 @@ class WebinarController extends Controller
             'other_city' => 'required_if:city,other',
             'source' => 'required|string',
         ]);
-
+    
         $registration = WebinarRegistration::create([
             'webinar_id' => $validated['webinar_id'],
             'name' => $validated['name'],
@@ -46,8 +46,18 @@ class WebinarController extends Controller
             'city' => $validated['city'] === 'other' ? $validated['other_city'] : $validated['city'],
             'source' => $validated['source'],
         ]);
-
-        return response()->json(['success' => true]);
+    
+        // Ambil webinar untuk mendapatkan community_link
+        $webinar = Webinar::find($validated['webinar_id']);
+        
+        $response = ['success' => true];
+        
+        // Jika ada community_link, kirim ke frontend
+        if ($webinar && $webinar->community_link) {
+            $response['redirect_url'] = $webinar->community_link;
+        }
+    
+        return response()->json($response);
     }
     
     public function index()

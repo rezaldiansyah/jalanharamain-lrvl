@@ -162,15 +162,15 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="image" class="form-label">Gambar Banner</label>
-                                    <input type="file" class="form-control @error('image') is-invalid @enderror" 
-                                           id="image" name="image" accept="image/*">
-                                    @error('image')
+                                    <label for="community_link" class="form-label">Link Grup WA/Telegram (Opsional)</label>
+                                    <input type="url" class="form-control @error('community_link') is-invalid @enderror" 
+                                           id="community_link" name="community_link" value="{{ old('community_link', $webinar->community_link) }}" 
+                                           placeholder="https://chat.whatsapp.com/xxx atau https://t.me/xxx">
+                                    @error('community_link')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <small class="form-text text-muted">Format: JPG, PNG, maksimal 2MB. Kosongkan jika tidak ingin mengubah gambar.</small>
+                                    <small class="form-text text-muted">Peserta akan diarahkan ke grup ini setelah mendaftar</small>
                                 </div>
-
                                 <div class="mb-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="is_active" name="is_active" 
