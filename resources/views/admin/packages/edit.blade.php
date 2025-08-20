@@ -59,37 +59,40 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Nama Paket <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" 
-                                           id="name" name="name" value="{{ old('name', $package->name) }}" required>
-                                    @error('name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                            // Di sekitar baris 60-80, ubah struktur field menjadi:
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Nama Paket <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                               id="name" name="name" value="{{ old('name', $package->name) }}" required>
+                                        @error('name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="destination" class="form-label">Destinasi <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('destination') is-invalid @enderror" 
+                                               id="destination" name="destination" value="{{ old('destination', $package->destination) }}" required>
+                                        @error('destination')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="destination" class="form-label">Destinasi <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('destination') is-invalid @enderror" 
-                                           id="destination" name="destination" value="{{ old('destination', $package->destination) }}" required>
-                                    @error('destination')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="duration_days" class="form-label">Durasi (Hari) <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control @error('duration_days') is-invalid @enderror" 
-                                           id="duration_days" name="duration_days" value="{{ old('duration_days', $package->duration_days) }}" min="1" required>
-                                    @error('duration_days')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="duration_days" class="form-label">Durasi (Hari) <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control @error('duration_days') is-invalid @enderror" 
+                                               id="duration_days" name="duration_days" value="{{ old('duration_days', $package->duration_days) }}" min="1" required>
+                                        @error('duration_days')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -154,131 +157,190 @@
                     </div>
                 </div>
                 
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Jadwal</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="start_date" class="form-label">Tanggal Mulai <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control @error('start_date') is-invalid @enderror" 
-                                           id="start_date" name="start_date" value="{{ old('start_date', $package->start_date->format('Y-m-d')) }}" required>
-                                    @error('start_date')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="end_date" class="form-label">Tanggal Selesai <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control @error('end_date') is-invalid @enderror" 
-                                           id="end_date" name="end_date" value="{{ old('end_date', $package->end_date->format('Y-m-d')) }}" required>
-                                    @error('end_date')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Detail Paket</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label for="itinerary" class="form-label">Itinerary</label>
-                            <textarea class="form-control @error('itinerary') is-invalid @enderror" 
-                                      id="itinerary" name="itinerary" rows="6" 
-                                      placeholder="Contoh:\nHari 1: Keberangkatan dari Jakarta\nHari 2: Tiba di Makkah, Check-in hotel\n...">{{ old('itinerary', $package->itinerary) }}</textarea>
-                            @error('itinerary')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="includes" class="form-label">Yang Termasuk</label>
-                                    <textarea class="form-control @error('includes') is-invalid @enderror" 
-                                              id="includes" name="includes" rows="4" 
-                                              placeholder="Contoh:\n- Tiket pesawat PP\n- Hotel bintang 4\n- Makan 3x sehari\n...">{{ old('includes', $package->includes) }}</textarea>
-                                    @error('includes')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="excludes" class="form-label">Yang Tidak Termasuk</label>
-                                    <textarea class="form-control @error('excludes') is-invalid @enderror" 
-                                              id="excludes" name="excludes" rows="4" 
-                                              placeholder="Contoh:\n- Visa\n- Asuransi perjalanan\n- Pengeluaran pribadi\n...">{{ old('excludes', $package->excludes) }}</textarea>
-                                    @error('excludes')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" 
-                                       {{ old('is_active', $package->is_active) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="is_active">
-                                    Paket Aktif
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="d-flex justify-content-end gap-2 mb-4">
-                    <a href="{{ route('admin.packages') }}" class="btn btn-secondary">
-                        <i class="fas fa-times"></i> Batal
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Update Paket
-                    </button>
-                </div>
-            </form>
-        </div>
-        
-        <div class="col-lg-4">
-            <div class="card">
+                    <!-- Tambahkan field Komisi Agen setelah card Harga & Kapasitas -->
+            <div class="card mb-4">
                 <div class="card-header">
-                    <h6 class="mb-0">Tips Pengisian</h6>
+                 <h5 class="mb-0">Komisi Agen</h5>
                 </div>
-                <div class="card-body">
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2">
-                            <i class="fas fa-lightbulb text-warning me-2"></i>
-                            <small>Pastikan travel partner sudah terdaftar dan aktif</small>
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-lightbulb text-warning me-2"></i>
-                            <small>Gunakan nama paket yang jelas dan menarik</small>
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-lightbulb text-warning me-2"></i>
-                            <small>Isi itinerary dengan detail untuk menarik minat calon jamaah</small>
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-lightbulb text-warning me-2"></i>
-                            <small>Pastikan tanggal selesai setelah tanggal mulai</small>
-                        </li>
-                        <li>
-                            <i class="fas fa-lightbulb text-warning me-2"></i>
-                            <small>Centang "Paket Aktif" agar paket dapat dilihat publik</small>
-                        </li>
-                    </ul>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="agent_fee" class="form-label">Fee Agen</label>
+                    <input type="number" class="form-control @error('agent_fee') is-invalid @enderror" 
+                           id="agent_fee" name="agent_fee" value="{{ old('agent_fee', $package->agent_fee) }}" 
+                           min="0" step="0.01" placeholder="Masukkan fee agen">
+                    @error('agent_fee')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                    <label for="agent_fee_type" class="form-label">Tipe Fee</label>
+                    <select class="form-select @error('agent_fee_type') is-invalid @enderror" 
+                            id="agent_fee_type" name="agent_fee_type">
+                        <option value="fixed" {{ old('agent_fee_type', $package->agent_fee_type) == 'fixed' ? 'selected' : '' }}>Nominal Tetap (Rp)</option>
+                        <option value="percentage" {{ old('agent_fee_type', $package->agent_fee_type) == 'percentage' ? 'selected' : '' }}>Persentase (%)</option>
+                    </select>
+                    @error('agent_fee_type')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="form-text">
+            <strong>Nominal Tetap:</strong> Fee dalam rupiah (contoh: 500000 = Rp 500.000)<br>
+            <strong>Persentase:</strong> Fee dalam persen dari harga paket (contoh: 5 = 5%)
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Jadwal</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="start_date" class="form-label">Tanggal Mulai <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control @error('start_date') is-invalid @enderror" 
+                           id="start_date" name="start_date" value="{{ old('start_date', $package->start_date) }}" required>
+                    @error('start_date')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="end_date" class="form-label">Tanggal Selesai <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control @error('end_date') is-invalid @enderror" 
+                           id="end_date" name="end_date" value="{{ old('end_date', $package->end_date) }}" required>
+                    @error('end_date')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Detail Paket</h5>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <label for="itinerary" class="form-label">Itinerary</label>
+            <textarea class="form-control @error('itinerary') is-invalid @enderror" 
+                      id="itinerary" name="itinerary" rows="6" 
+                      placeholder="Contoh:\nHari 1: Keberangkatan dari Jakarta\nHari 2: Tiba di Makkah, Check-in hotel\n...">{{ old('itinerary', $package->itinerary) }}</textarea>
+            @error('itinerary')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="includes" class="form-label">Yang Termasuk</label>
+                    <textarea class="form-control @error('includes') is-invalid @enderror" 
+                              id="includes" name="includes" rows="4" 
+                              placeholder="Contoh:\n- Tiket pesawat PP\n- Hotel bintang 4\n- Makan 3x sehari\n...">{{ old('includes', $package->includes) }}</textarea>
+                    @error('includes')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="excludes" class="form-label">Yang Tidak Termasuk</label>
+                    <textarea class="form-control @error('excludes') is-invalid @enderror" 
+                              id="excludes" name="excludes" rows="4" 
+                              placeholder="Contoh:\n- Visa\n- Asuransi perjalanan\n- Pengeluaran pribadi\n...">{{ old('excludes', $package->excludes) }}</textarea>
+                    @error('excludes')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" 
+                       {{ old('is_active', $package->is_active) ? 'checked' : '' }}>
+                <label class="form-check-label" for="is_active">
+                    Paket Aktif
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-end gap-2 mb-4">
+    <a href="{{ route('admin.packages') }}" class="btn btn-secondary">
+        <i class="fas fa-times"></i> Batal
+    </a>
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save"></i> Update Paket
+    </button>
+</div>
+</form>
+</div>
+
+<div class="col-lg-4">
+    <div class="card">
+        <div class="card-header">
+            <h6 class="mb-0">Tips Pengisian</h6>
+        </div>
+        <div class="card-body">
+            <ul class="list-unstyled mb-0">
+                <li class="mb-2">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <small>Pastikan travel partner sudah terdaftar dan aktif</small>
+                </li>
+                <li class="mb-2">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <small>Gunakan nama paket yang jelas dan menarik</small>
+                </li>
+                <li class="mb-2">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <small>Isi itinerary dengan detail untuk menarik minat calon jamaah</small>
+                </li>
+                <li class="mb-2">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <small>Pastikan tanggal selesai setelah tanggal mulai</small>
+                </li>
+                <li>
+                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                    <small>Centang "Paket Aktif" agar paket dapat dilihat publik</small>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
 </div>
 
 <script>

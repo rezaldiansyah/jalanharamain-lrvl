@@ -127,6 +127,47 @@
                     </div>
                 </div>
                 
+                <!-- Komisi Agen -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Komisi Agen</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="agent_fee" class="form-label">Fee Agen</label>
+                    <input type="number" class="form-control @error('agent_fee') is-invalid @enderror" 
+                           id="agent_fee" name="agent_fee" value="{{ old('agent_fee', $package->agent_fee) }}" 
+                           min="0" step="0.01" placeholder="Masukkan fee agen">
+                    @error('agent_fee')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                        </div>
+                     </div>
+                 <div class="col-md-6">
+                    <div class="mb-3">
+                    <label for="agent_fee_type" class="form-label">Tipe Fee</label>
+                    <select class="form-select @error('agent_fee_type') is-invalid @enderror" 
+                            id="agent_fee_type" name="agent_fee_type">
+                        <option value="fixed" {{ old('agent_fee_type', $package->agent_fee_type) == 'fixed' ? 'selected' : '' }}>Nominal Tetap (Rp)</option>
+                        <option value="percentage" {{ old('agent_fee_type', $package->agent_fee_type) == 'percentage' ? 'selected' : '' }}>Persentase (%)</option>
+                    </select>
+                    @error('agent_fee_type')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                        </div>
+                     </div>
+                    </div>
+                 </div>
+                    <div class="form-text">
+                    <strong>Nominal Tetap:</strong> Fee dalam rupiah (contoh: 500000 = Rp 500.000)<br>
+                    <strong>Persentase:</strong> Fee dalam persen dari harga paket (contoh: 5 = 5%)
+                    </div>
+                    </div>
+                </div>
+
+
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">Jadwal</h5>
@@ -157,156 +198,130 @@
                     </div>
                 </div>
                 
+                <!-- Detail Paket -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">Detail Paket</h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="itinerary" class="form-label">Itinerary</label>
+                            <label for="itinerary" class="form-label">Itinerary <span class="text-danger">*</span></label>
                             <textarea class="form-control @error('itinerary') is-invalid @enderror" 
-                                      id="itinerary" name="itinerary" rows="6" 
-                                      placeholder="Contoh:\nHari 1: Keberangkatan dari Jakarta\nHari 2: Tiba di Makkah, Check-in hotel\n...">{{ old('itinerary', $package->itinerary) }}</textarea>
+                                      id="itinerary" name="itinerary" rows="8" required 
+                                      placeholder="Masukkan detail itinerary perjalanan...">{{ old('itinerary', $package->itinerary) }}</textarea>
                             @error('itinerary')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="includes" class="form-label">Yang Termasuk</label>
-                                    <textarea class="form-control @error('includes') is-invalid @enderror" 
-                                              id="includes" name="includes" rows="4" 
-                                              placeholder="Contoh:\n- Tiket pesawat PP\n- Hotel bintang 4\n- Makan 3x sehari\n...">{{ old('includes', $package->includes) }}</textarea>
-                                    @error('includes')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="excludes" class="form-label">Yang Tidak Termasuk</label>
-                                    <textarea class="form-control @error('excludes') is-invalid @enderror" 
-                                              id="excludes" name="excludes" rows="4" 
-                                              placeholder="Contoh:\n- Visa\n- Asuransi perjalanan\n- Pengeluaran pribadi\n...">{{ old('excludes', $package->excludes) }}</textarea>
-                                    @error('excludes')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            <label for="included" class="form-label">Yang Termasuk</label>
+                            <textarea class="form-control @error('included') is-invalid @enderror" 
+                                      id="included" name="included" rows="5" 
+                                      placeholder="Contoh: Tiket pesawat, Hotel, Makan, dll...">{{ old('included', $package->included) }}</textarea>
+                            @error('included')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         
                         <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" 
-                                       {{ old('is_active', $package->is_active) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="is_active">
-                                    Paket Aktif (dapat dilihat publik)
-                                </label>
-                            </div>
+                            <label for="excluded" class="form-label">Yang Tidak Termasuk</label>
+                            <textarea class="form-control @error('excluded') is-invalid @enderror" 
+                                      id="excluded" name="excluded" rows="5" 
+                                      placeholder="Contoh: Visa, Asuransi perjalanan, dll...">{{ old('excluded', $package->excluded) }}</textarea>
+                            @error('excluded')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                 </div>
                 
-                <div class="d-flex justify-content-end gap-2 mb-4">
-                    <a href="{{ route('travel.packages') }}" class="btn btn-secondary">
-                        <i class="fas fa-times"></i> Batal
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Update Paket
-                    </button>
+                <!-- Status -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Status</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" 
+                                   {{ old('is_active', $package->is_active) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="is_active">
+                                Paket Aktif
+                            </label>
+                        </div>
+                        <div class="form-text">Centang untuk mengaktifkan paket ini agar dapat dilihat oleh publik</div>
+                    </div>
                 </div>
-            </form>
-        </div>
-        
-        <div class="col-lg-4">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h6 class="mb-0">Informasi Travel Partner</h6>
+                
+                <!-- Tombol -->
+                <div class="d-flex justify-content-between">
+                    <a href="{{ route('travel.packages') }}" class="btn btn-secondary">Batal</a>
+                    <button type="submit" class="btn btn-primary">Update Paket</button>
                 </div>
-                <div class="card-body">
-                    <table class="table table-sm">
-                        <tr><td><strong>Nama Travel:</strong></td><td>{{ $travelPartner->name }}</td></tr>
-                        <tr><td><strong>Contact Person:</strong></td><td>{{ $travelPartner->contact_person }}</td></tr>
-                        <tr><td><strong>Email:</strong></td><td>{{ $travelPartner->email }}</td></tr>
-                        <tr><td><strong>PPIU:</strong></td><td>{{ $travelPartner->ppiu_number ?: '-' }}</td></tr>
-                        <tr><td><strong>PIHK:</strong></td><td>{{ $travelPartner->pihk_number ?: '-' }}</td></tr>
-                    </table>
+                
+                </form>
+                
+                <div class="mt-4 p-3 bg-light rounded">
+                    <h6>Informasi Travel Partner</h6>
+                    <p class="mb-1"><strong>Nama:</strong> {{ auth()->user()->name }}</p>
+                    <p class="mb-1"><strong>Email:</strong> {{ auth()->user()->email }}</p>
+                    <p class="mb-0"><strong>Status:</strong> 
+                        @if(auth()->user()->travelPartner && auth()->user()->travelPartner->is_verified)
+                            <span class="badge bg-success">Terverifikasi</span>
+                        @else
+                            <span class="badge bg-warning">Belum Terverifikasi</span>
+                        @endif
+                    </p>
                 </div>
-            </div>
-            
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="mb-0">Tips Pengisian</h6>
-                </div>
-                <div class="card-body">
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2">
-                            <i class="fas fa-lightbulb text-warning me-2"></i>
-                            <small>Gunakan nama paket yang menarik dan mudah diingat</small>
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-lightbulb text-warning me-2"></i>
-                            <small>Isi deskripsi dengan detail untuk menarik minat jamaah</small>
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-lightbulb text-warning me-2"></i>
-                            <small>Pastikan harga kompetitif dan sesuai fasilitas</small>
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-lightbulb text-warning me-2"></i>
-                            <small>Upload gambar yang menarik untuk paket travel</small>
-                        </li>
-                        <li>
-                            <i class="fas fa-lightbulb text-warning me-2"></i>
-                            <small>Centang "Paket Aktif" agar dapat dilihat calon jamaah</small>
-                        </li>
+                
+                <div class="mt-3 alert alert-info">
+                    <h6>Tips Pengisian:</h6>
+                    <ul class="mb-0">
+                        <li>Pastikan semua informasi yang diisi akurat dan lengkap</li>
+                        <li>Gunakan deskripsi yang menarik untuk menarik minat calon peserta</li>
+                        <li>Upload gambar dengan kualitas baik (maksimal 2MB)</li>
+                        <li>Tentukan harga yang kompetitif sesuai dengan fasilitas yang ditawarkan</li>
                     </ul>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-// Auto calculate end date based on start date and duration
-document.getElementById('start_date').addEventListener('change', calculateEndDate);
-document.getElementById('duration_days').addEventListener('change', calculateEndDate);
-
-function calculateEndDate() {
-    const startDate = document.getElementById('start_date').value;
-    const duration = document.getElementById('duration_days').value;
-    
-    if (startDate && duration) {
-        const start = new Date(startDate);
-        const end = new Date(start);
-        end.setDate(start.getDate() + parseInt(duration) - 1);
-        
-        const endDateString = end.toISOString().split('T')[0];
-        document.getElementById('end_date').value = endDateString;
-    }
-}
-
-// Image preview
-document.getElementById('image').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            // Create or update preview image
-            let preview = document.getElementById('image-preview');
-            if (!preview) {
-                preview = document.createElement('img');
-                preview.id = 'image-preview';
-                preview.className = 'img-thumbnail mt-2';
-                preview.style.maxWidth = '200px';
-                e.target.parentNode.appendChild(preview);
-            }
-            preview.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
-</script>
-@endsection
+                
+                <script>
+                // Auto calculate end date based on start date and duration
+                document.getElementById('start_date').addEventListener('change', calculateEndDate);
+                document.getElementById('duration_days').addEventListener('change', calculateEndDate);
+                
+                function calculateEndDate() {
+                    const startDate = document.getElementById('start_date').value;
+                    const duration = document.getElementById('duration_days').value;
+                    
+                    if (startDate && duration) {
+                        const start = new Date(startDate);
+                        const end = new Date(start);
+                        end.setDate(start.getDate() + parseInt(duration) - 1);
+                        
+                        const endDateString = end.toISOString().split('T')[0];
+                        document.getElementById('end_date').value = endDateString;
+                    }
+                }
+                
+                // Image preview
+                document.getElementById('image').addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            // Create or update preview image
+                            let preview = document.getElementById('image-preview');
+                            if (!preview) {
+                                preview = document.createElement('img');
+                                preview.id = 'image-preview';
+                                preview.className = 'img-thumbnail mt-2';
+                                preview.style.maxWidth = '200px';
+                                e.target.parentNode.appendChild(preview);
+                            }
+                            preview.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+                </script>
+                @endsection

@@ -177,6 +177,8 @@ class AdminController extends Controller
             'includes' => 'nullable|string',
             'excludes' => 'nullable|string',
             'is_active' => 'boolean',
+            'agent_fee' => 'nullable|numeric|min:0',
+            'agent_fee_type' => 'required_with:agent_fee|in:fixed,percentage',
         ]);
     
         // Handle image upload
@@ -210,6 +212,8 @@ class AdminController extends Controller
             'includes' => 'nullable|string',
             'excludes' => 'nullable|string',
             'is_active' => 'boolean',
+            'agent_fee' => 'nullable|numeric|min:0',
+            'agent_fee_type' => 'required_with:agent_fee|in:fixed,percentage',
         ]);
     
         // Handle image upload
@@ -226,7 +230,7 @@ class AdminController extends Controller
         }
     
         $package->update($validated);
-        
+    
         return redirect()->route('admin.packages')->with('success', 'Paket perjalanan berhasil diperbarui!');
     }
 

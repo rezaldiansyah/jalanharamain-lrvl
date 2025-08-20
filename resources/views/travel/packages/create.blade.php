@@ -97,6 +97,45 @@
                     </div>
                 </div>
                 
+                <!-- Tambahkan card Komisi Agen setelah card "Harga & Kapasitas" -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Komisi Agen</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="agent_fee" class="form-label">Fee Agen</label>
+                                    <input type="number" class="form-control @error('agent_fee') is-invalid @enderror" 
+                                           id="agent_fee" name="agent_fee" value="{{ old('agent_fee') }}" 
+                                           min="0" step="0.01" placeholder="Masukkan fee agen">
+                                    @error('agent_fee')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="agent_fee_type" class="form-label">Tipe Fee</label>
+                                    <select class="form-select @error('agent_fee_type') is-invalid @enderror" 
+                                            id="agent_fee_type" name="agent_fee_type">
+                                        <option value="fixed" {{ old('agent_fee_type', 'fixed') == 'fixed' ? 'selected' : '' }}>Nominal Tetap (Rp)</option>
+                                        <option value="percentage" {{ old('agent_fee_type') == 'percentage' ? 'selected' : '' }}>Persentase (%)</option>
+                                    </select>
+                                    @error('agent_fee_type')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-text">
+                            <strong>Nominal Tetap:</strong> Fee dalam rupiah (contoh: 500000 = Rp 500.000)<br>
+                            <strong>Persentase:</strong> Fee dalam persen dari harga paket (contoh: 5 = 5%)
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">Jadwal</h5>

@@ -18,6 +18,8 @@ class TravelPackage extends Model
         'destination',
         'duration_days',
         'price',
+        'agent_fee',
+        'agent_fee_type',
         'start_date',
         'end_date',
         'max_participants',
@@ -29,6 +31,7 @@ class TravelPackage extends Model
 
     protected $casts = [
         'price' => 'decimal:2',
+        'agent_fee' => 'decimal:2',
         'start_date' => 'date',
         'end_date' => 'date',
         'is_active' => 'boolean',
