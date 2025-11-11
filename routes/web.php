@@ -13,15 +13,23 @@ use App\Http\Controllers\MapController;
 use App\Http\Controllers\AgentController;
 use App\Helpers\Cities;
 use Illuminate\Http\Request;
-// use App\Models\TravelPackage; // <-- tambahkan impor model
+use Illuminate\Support\Str;
 
 // Update route home
 Route::get('/', function (Request $request) {
     $query = TravelPackage::with('travelPartner')
         ->where('is_active', true);
 
-    if ($request->filled('category')) {
-        $query->where('category', $request->string('category'));
+    $categoryRaw = $request->input('category');
+    if (!is_null($categoryRaw)) {
+        $normalized = Str::of($categoryRaw)->lower()->replace(' ', '_')->replace('-', '_')->toString();
+        if ($normalized === 'umrah') { // samakan ejaan dengan data di DB
+            $normalized = 'umroh';
+        }
+        $allowed = ['umroh', 'haji_khusus', 'wisata_halal', 'lainnya'];
+        if (in_array($normalized, $allowed, true)) {
+            $query->where('category', $normalized);
+        }
     }
 
     $popularPackages = $query
@@ -250,6 +258,13 @@ Route::get('webinar/{type}/{date}', [WebinarController::class, 'showBySlug'])
 // Peta & POI publik
 Route::get('/map', [MapController::class, 'index'])->name('map');
 Route::get('/api/pois', [MapController::class, 'pois'])->name('api.pois');
+
+// Detail paket publik
+// Rute publik untuk detail paket (route model binding)
+Route::get('/packages/{package}', function (TravelPackage $package) {
+    $package->load('travelPartner');
+    return view('packages.show', compact('package'));
+})->name('packages.show');
 
 // Area Agent (harus login & role agent/calon-agen)
 Route::middleware(['auth'])->group(function () {

@@ -138,45 +138,127 @@ body {
 
 /* Search Box - Kayak Style */
 .search-container {
-    background: white;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    max-width: 800px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    max-width: 950px;
     margin: 0 auto;
+    border: 1px solid #e5e7eb;
 }
 
 .search-tabs {
     display: flex;
-    gap: 0;
-    margin-bottom: 25px;
-    border-radius: 8px;
-    overflow: hidden;
+    gap: 6px;
+    margin-bottom: 16px; /* dipendekkan agar tidak memanjang ke bawah */
+    border-radius: 12px;
+    padding: 4px;
     background: #f3f4f5;
 }
 
 .search-tab {
     flex: 1;
-    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
     background: transparent;
     border: none;
+    text-decoration: none; /* hilangkan underline */
     font-family: 'Ubuntu', sans-serif;
-    font-weight: 500;
-    color: #666;
+    font-weight: 600;
+    color: #374da0;
+    border-radius: 10px;
+    transition: all 0.2s ease;
     cursor: pointer;
-    transition: all 0.3s ease;
 }
 
+.search-tab:hover { background: #e9edf3; color: #2a3a7a; }
 .search-tab.active {
     background: #374da0;
-    color: white;
+    color: #ffffff;
+    box-shadow: 0 3px 12px rgba(55,77,160,0.25);
+}
+
+.tab-icon {
+    font-size: 18px;
+    line-height: 1;
 }
 
 .search-form {
     display: grid;
-    grid-template-columns: 2fr 2fr 1fr 1fr;
-    gap: 15px;
-    align-items: end;
+    grid-template-columns: 2fr 1.3fr 1.2fr 1.2fr auto; /* satu baris, tombol di ujung kanan */
+    gap: 10px;
+    align-items: center;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon .fi {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.input-with-icon .form-input {
+    width: 100%;
+    padding: 12px 14px 12px 38px; /* beri ruang untuk ikon kiri */
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.input-with-icon .form-input:focus {
+    outline: none;
+    border-color: #374da0;
+    box-shadow: 0 0 0 3px rgba(55, 77, 160, 0.12);
+}
+
+.search-btn {
+    background: linear-gradient(135deg, #2cbbbc 0%, #327eac 100%);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    height: 44px;
+}
+.search-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(44,187,188,0.28); }
+
+/* Responsive: rapikan menjadi stack di layar kecil */
+@media (max-width: 992px) {
+    .search-form { grid-template-columns: 1fr 1fr; }
+    .search-btn { grid-column: span 2; width: 100%; }
+}
+@media (max-width: 640px) {
+    .search-form { grid-template-columns: 1fr; }
+    .search-btn { grid-column: span 1; width: 100%; }
+}
+
+.search-tab:focus-visible {
+    outline: 2px solid #2cbbbc;
+    outline-offset: 2px;
+}
+}
+
+.search-form {
+    display: grid;
+    grid-template-columns: 2fr 1.3fr 1.2fr 1.2fr auto;
+    gap: 10px;
+    align-items: center;
 }
 
 .form-group {
@@ -697,22 +779,31 @@ body {
         <!-- Search Box -->
         <div class="search-container">
             <div class="search-tabs">
-                <button class="search-tab active" onclick="switchTab('umroh')">Paket Umroh</button>
-                <button class="search-tab" onclick="switchTab('wisata')">Wisata Halal</button>
-                <button class="search-tab" onclick="switchTab('hotel')">Hotel</button>
+                <button type="button" class="search-tab active" onclick="switchTab('umroh')">
+                    <span class="tab-icon">🕋</span>
+                    <span>Paket Umroh</span>
+                </button>
+                <button type="button" class="search-tab" onclick="switchTab('wisata_halal')">
+                    <span class="tab-icon">🌍</span>
+                    <span>Wisata Halal</span>
+                </button>
+                <button type="button" class="search-tab" onclick="switchTab('hotel')">
+                    <span class="tab-icon">🏨</span>
+                    <span>Hotel</span>
+                </button>
             </div>
             
             <form class="search-form" id="searchForm">
-                <div class="form-group">
-                    <label class="form-label">Tujuan</label>
-                    <input type="text" class="form-input" placeholder="Makkah, Madinah, Istanbul..." required>
+                <div class="input-with-icon">
+                    <span class="fi">📍</span>
+                    <input type="text" class="form-input" placeholder="Ke mana? (Makkah, Madinah, Istanbul...)" required>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Tanggal Keberangkatan</label>
-                    <input type="date" class="form-input" required>
+                <div class="input-with-icon">
+                    <span class="fi">📅</span>
+                    <input type="date" class="form-input" placeholder="Tanggal Keberangkatan" required>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Durasi</label>
+                <div class="input-with-icon">
+                    <span class="fi">⏱️</span>
                     <select class="form-input" required>
                         <option value="">Pilih Durasi</option>
                         <option value="9">9 Hari</option>
@@ -721,8 +812,8 @@ body {
                         <option value="custom">Custom</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Jamaah</label>
+                <div class="input-with-icon">
+                    <span class="fi">👥</span>
                     <select class="form-input" required>
                         <option value="">Jumlah</option>
                         <option value="1">1 Orang</option>
@@ -731,7 +822,7 @@ body {
                         <option value="4+">4+ Orang</option>
                     </select>
                 </div>
-                <button type="submit" class="search-btn">Cari Paket</button>
+                <button type="submit" class="search-btn">Cari</button>
             </form>
         </div>
     </div>
@@ -779,53 +870,107 @@ body {
 </section>
 
 <!-- Packages Section -->
-<section class="packages-section" id="packages">
-    @php
-        $packagesList = $popularPackages ?? $packages ?? collect();
-        $activeCategory = request('category');
-    @endphp
+<section class="packages-section">
+    <div class="features-container">
+        <h2 class="section-title">Paket Populer</h2>
+        <p class="section-subtitle">Pilihan paket terbaik yang telah dipercaya oleh ribuan jamaah dari seluruh Indonesia.</p>
 
-    <h2>Paket Populer</h2>
+        @php
+            $raw = request('category');
+            $activeCategory = $raw ? \Illuminate\Support\Str::of($raw)->lower()->replace(' ', '_')->replace('-', '_')->toString() : null;
+            if ($activeCategory === 'umrah') { $activeCategory = 'umroh'; }
+        @endphp
 
-    <div class="category-tabs" style="margin-bottom:16px; display:flex; gap:8px;">
-        <a href="{{ url('/') }}"
-           class="tab {{ !$activeCategory ? 'active' : '' }}"
-           style="padding:8px 12px; border-radius:8px; border:1px solid #eee; {{ !$activeCategory ? 'background:#f5f5f5;' : '' }}">
-           Semua
-        </a>
-        <a href="{{ url('/?category=umrah') }}"
-           class="tab {{ $activeCategory === 'umrah' ? 'active' : '' }}"
-           style="padding:8px 12px; border-radius:8px; border:1px solid #eee; {{ $activeCategory === 'umrah' ? 'background:#f5f5f5;' : '' }}">
-           Umroh
-        </a>
-        <a href="{{ url('/?category=wisata_halal') }}"
-           class="tab {{ $activeCategory === 'wisata_halal' ? 'active' : '' }}"
-           style="padding:8px 12px; border-radius:8px; border:1px solid #eee; {{ $activeCategory === 'wisata_halal' ? 'background:#f5f5f5;' : '' }}">
-           Wisata Halal
-        </a>
-    </div>
-
-    @if($packagesList->isNotEmpty())
+        <div class="search-tabs" style="margin-top:10px;">
+            <a href="{{ route('home') }}" class="search-tab {{ $activeCategory === null ? 'active' : '' }}">Semua</a>
+            <a href="{{ route('home', ['category' => 'umroh']) }}" class="search-tab {{ $activeCategory === 'umroh' ? 'active' : '' }}">Umroh</a>
+            <a href="{{ route('home', ['category' => 'wisata_halal']) }}" class="search-tab {{ $activeCategory === 'wisata_halal' ? 'active' : '' }}">Wisata Halal</a>
+        </div>
+        
         <div class="packages-grid">
-            @foreach($packagesList as $package)
+            @forelse($popularPackages as $package)
                 <div class="package-card">
-                    <img src="{{ $package->image ? asset('storage/'.$package->image) : asset('images/packages/default.jpg') }}" alt="{{ $package->name }}">
-                    <div class="package-card-content">
-                        <h3>{{ $package->name }}</h3>
-                        <p class="partner">{{ optional($package->travelPartner)->name ?? 'Travel Partner' }}</p>
-                        <p class="price">Rp {{ number_format($package->price ?? 0, 0, ',', '.') }}</p>
-                        <p class="meta">
-                            {{ $package->duration_days ? $package->duration_days.' Hari' : '' }}
-                            @if(!empty($package->destination)) • {{ $package->destination }} @endif
-                        </p>
-                        <a href="#" class="btn btn-primary">Lihat Detail</a>
+                    <div class="package-image">
+                        @if(str_contains(strtolower($package->destination), 'makkah') || str_contains(strtolower($package->destination), 'madinah') || str_contains(strtolower($package->name), 'umroh'))
+                            🕌
+                        @elseif(str_contains(strtolower($package->destination), 'turki'))
+                            🌍
+                        @else
+                            ⭐
+                        @endif
+                    </div>
+                    <div class="package-content">
+                        <h3 class="package-title">{{ $package->name }}</h3>
+                        <div class="package-price">Rp {{ number_format($package->price, 0, ',', '.') }}</div>
+                        <ul class="package-features">
+                            <li>{{ $package->destination }}</li>
+                            <li>Durasi {{ $package->duration_days }} hari</li>
+                            @if($package->travelPartner)
+                                <li>by {{ $package->travelPartner->company_name }}</li>
+                            @endif
+                            @if($package->description)
+                                <li>{{ Str::limit($package->description, 50) }}</li>
+                            @endif
+                            <li>Tanggal: {{ \Carbon\Carbon::parse($package->start_date)->format('d M Y') }}</li>
+                        </ul>
+                        <!-- Link ke halaman detail paket -->
+                        <a href="{{ route('packages.show', ['package' => $package->id]) }}" class="package-btn" style="display:block; text-align:center;">
+                            Lihat Detail
+                        </a>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <!-- Fallback ke paket statis jika belum ada data -->
+                <div class="package-card">
+                    <div class="package-image">🕌</div>
+                    <div class="package-content">
+                        <h3 class="package-title">Umroh Ekonomis 9 Hari</h3>
+                        <div class="package-price">Rp 25.000.000</div>
+                        <ul class="package-features">
+                            <li>Hotel bintang 3 di Makkah & Madinah</li>
+                            <li>Transportasi AC selama di Arab Saudi</li>
+                            <li>Makan 3x sehari</li>
+                            <li>Pembimbing berpengalaman</li>
+                            <li>Visa & handling</li>
+                        </ul>
+                        <button class="package-btn">Pilih Paket</button>
+                    </div>
+                </div>
+                
+                <div class="package-card">
+                    <div class="package-image">⭐</div>
+                    <div class="package-content">
+                        <h3 class="package-title">Umroh VIP 12 Hari</h3>
+                        <div class="package-price">Rp 45.000.000</div>
+                        <ul class="package-features">
+                            <li>Hotel bintang 5 dekat Haram</li>
+                            <li>Transportasi VIP</li>
+                            <li>Buffet premium</li>
+                            <li>City tour Madinah</li>
+                            <li>Ziarah lengkap</li>
+                        </ul>
+                        <button class="package-btn">Pilih Paket</button>
+                    </div>
+                </div>
+                
+                <div class="package-card">
+                    <div class="package-image">🌍</div>
+                    <div class="package-content">
+                        <h3 class="package-title">Wisata Halal Turki</h3>
+                        <div class="package-price">Rp 35.000.000</div>
+                        <ul class="package-features">
+                            <li>Istanbul, Cappadocia, Pamukkale</li>
+                            <li>Hotel halal bintang 4</li>
+                            <li>Makanan halal terjamin</li>
+                            <li>Panduan wisata muslim</li>
+                            <li>Shopping tour</li>
+                        </ul>
+                        <button class="package-btn">Pilih Paket</button>
+                    </div>
+                </div>
+            @endforelse
         </div>
-    @else
-        <p style="text-align:center; color:#666;">Belum ada paket aktif untuk kategori ini.</p>
-    @endif
+    </div>
 </section>
 
 <!-- Testimonials Section -->
@@ -872,12 +1017,11 @@ function toggleMobileMenu() {
 
 function switchTab(tabType) {
     // Remove active class from all tabs
-    document.querySelectorAll('.search-tab').forEach(tab => {
-        tab.classList.remove('active');
-    });
+    document.querySelectorAll('.search-tab').forEach(tab => tab.classList.remove('active'));
     
-    // Add active class to clicked tab
-    event.target.classList.add('active');
+    // Add active class to clicked tab (also when clicking inner icon/text)
+    const clicked = event?.target?.closest('.search-tab');
+    if (clicked) clicked.classList.add('active');
     
     // You can add logic here to change form fields based on tab type
     console.log('Switched to:', tabType);
@@ -905,14 +1049,11 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// Lindungi handler jika elemen tidak ada
-const searchForm = document.getElementById('searchForm');
-if (searchForm) {
-    searchForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Fitur pencarian akan segera tersedia!');
-    });
-}
+// Form submission
+document.getElementById('searchForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Fitur pencarian akan segera tersedia!');
+});
 </script>
 
 <script>
