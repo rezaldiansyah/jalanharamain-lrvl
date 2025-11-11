@@ -59,7 +59,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            // Di sekitar baris 60-80, ubah struktur field menjadi:
+                            {{-- Di sekitar baris 60-80, ubah struktur field menjadi: --}}
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -226,7 +226,7 @@
                 <div class="mb-3">
                     <label for="start_date" class="form-label">Tanggal Mulai <span class="text-danger">*</span></label>
                     <input type="date" class="form-control @error('start_date') is-invalid @enderror" 
-                           id="start_date" name="start_date" value="{{ old('start_date', $package->start_date) }}" required>
+                           id="start_date" name="start_date" value="{{ old('start_date', optional($package->start_date)->format('Y-m-d')) }}" required>
                     @error('start_date')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -236,7 +236,7 @@
                 <div class="mb-3">
                     <label for="end_date" class="form-label">Tanggal Selesai <span class="text-danger">*</span></label>
                     <input type="date" class="form-control @error('end_date') is-invalid @enderror" 
-                           id="end_date" name="end_date" value="{{ old('end_date', $package->end_date) }}" required>
+                           id="end_date" name="end_date" value="{{ old('end_date', optional($package->end_date)->format('Y-m-d')) }}" required>
                     @error('end_date')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
