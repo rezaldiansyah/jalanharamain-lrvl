@@ -1,0 +1,16 @@
+{
+  "name": "JalanHaramain",
+  "short_name": "JH",
+  "description": "PWA peta POI dan itinerary untuk jamaah mandiri.",
+  "start_url": "/map",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0b5ed7",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}

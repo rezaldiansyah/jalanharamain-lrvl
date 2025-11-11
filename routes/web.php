@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\TravelPackage;
 use App\Http\Controllers\WebinarController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
@@ -8,10 +9,28 @@ use App\Http\Controllers\LeadMagnetController;
 use App\Http\Controllers\AgenController;
 use App\Http\Controllers\TravelController;
 use App\Http\Controllers\HomeController; // Tambahkan ini
+use App\Http\Controllers\MapController;
+use App\Http\Controllers\AgentController;
 use App\Helpers\Cities;
+use Illuminate\Http\Request;
+// use App\Models\TravelPackage; // <-- tambahkan impor model
 
 // Update route home
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', function (Request $request) {
+    $query = TravelPackage::with('travelPartner')
+        ->where('is_active', true);
+
+    if ($request->filled('category')) {
+        $query->where('category', $request->string('category'));
+    }
+
+    $popularPackages = $query
+        ->orderByDesc('start_date')
+        ->take(6)
+        ->get();
+
+    return view('utama', compact('popularPackages'));
+})->name('home');
 
 Route::get('/webinar', function () {
     $cities = Cities::getIndonesianCities();
@@ -88,6 +107,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/webinars/{webinar}/edit', [AdminController::class, 'editWebinar'])->name('webinars.edit');
     Route::put('/webinars/{webinar}', [AdminController::class, 'updateWebinar'])->name('webinars.update');
     Route::delete('/webinars/{webinar}', [AdminController::class, 'destroyWebinar'])->name('webinars.destroy');
+
+    // Tambahan: daftar pendaftar + ekspor
+    Route::get('/webinars/{webinar}/registrations', [AdminController::class, 'webinarRegistrations'])->name('webinars.registrations');
+    Route::get('/webinars/{webinar}/registrations/export', [AdminController::class, 'exportWebinarRegistrations'])->name('webinars.registrations.export');
 });
 
 // Public webinar routes
@@ -223,3 +246,13 @@ Route::get('webinar/{type}/{date}', [WebinarController::class, 'showBySlug'])
 // Route::get('{slug}', [WebinarController::class, 'showBySlug'])
 //     ->where('slug', 'webinar/.*')
 //     ->name('webinar.dynamic');
+
+// Peta & POI publik
+Route::get('/map', [MapController::class, 'index'])->name('map');
+Route::get('/api/pois', [MapController::class, 'pois'])->name('api.pois');
+
+// Area Agent (harus login & role agent/calon-agen)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/agent/map', [AgentController::class, 'map'])->name('agent.map');
+    Route::get('/agent/itineraries', [AgentController::class, 'itineraries'])->name('agent.itineraries');
+});

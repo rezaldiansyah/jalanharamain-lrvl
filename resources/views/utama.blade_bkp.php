@@ -779,53 +779,92 @@ body {
 </section>
 
 <!-- Packages Section -->
-<section class="packages-section" id="packages">
-    @php
-        $packagesList = $popularPackages ?? $packages ?? collect();
-        $activeCategory = request('category');
-    @endphp
-
-    <h2>Paket Populer</h2>
-
-    <div class="category-tabs" style="margin-bottom:16px; display:flex; gap:8px;">
-        <a href="{{ url('/') }}"
-           class="tab {{ !$activeCategory ? 'active' : '' }}"
-           style="padding:8px 12px; border-radius:8px; border:1px solid #eee; {{ !$activeCategory ? 'background:#f5f5f5;' : '' }}">
-           Semua
-        </a>
-        <a href="{{ url('/?category=umrah') }}"
-           class="tab {{ $activeCategory === 'umrah' ? 'active' : '' }}"
-           style="padding:8px 12px; border-radius:8px; border:1px solid #eee; {{ $activeCategory === 'umrah' ? 'background:#f5f5f5;' : '' }}">
-           Umroh
-        </a>
-        <a href="{{ url('/?category=wisata_halal') }}"
-           class="tab {{ $activeCategory === 'wisata_halal' ? 'active' : '' }}"
-           style="padding:8px 12px; border-radius:8px; border:1px solid #eee; {{ $activeCategory === 'wisata_halal' ? 'background:#f5f5f5;' : '' }}">
-           Wisata Halal
-        </a>
-    </div>
-
-    @if($packagesList->isNotEmpty())
+<section class="packages-section">
+    <div class="features-container">
+        <h2 class="section-title">Paket Populer</h2>
+        <p class="section-subtitle">Pilihan paket terbaik yang telah dipercaya oleh ribuan jamaah dari seluruh Indonesia.</p>
+        
         <div class="packages-grid">
-            @foreach($packagesList as $package)
+            @forelse($popularPackages as $package)
                 <div class="package-card">
-                    <img src="{{ $package->image ? asset('storage/'.$package->image) : asset('images/packages/default.jpg') }}" alt="{{ $package->name }}">
-                    <div class="package-card-content">
-                        <h3>{{ $package->name }}</h3>
-                        <p class="partner">{{ optional($package->travelPartner)->name ?? 'Travel Partner' }}</p>
-                        <p class="price">Rp {{ number_format($package->price ?? 0, 0, ',', '.') }}</p>
-                        <p class="meta">
-                            {{ $package->duration_days ? $package->duration_days.' Hari' : '' }}
-                            @if(!empty($package->destination)) • {{ $package->destination }} @endif
-                        </p>
-                        <a href="#" class="btn btn-primary">Lihat Detail</a>
+                    <div class="package-image">
+                        @if(str_contains(strtolower($package->destination), 'makkah') || str_contains(strtolower($package->destination), 'madinah') || str_contains(strtolower($package->name), 'umroh'))
+                            🕌
+                        @elseif(str_contains(strtolower($package->destination), 'turki'))
+                            🌍
+                        @else
+                            ⭐
+                        @endif
+                    </div>
+                    <div class="package-content">
+                        <h3 class="package-title">{{ $package->name }}</h3>
+                        <div class="package-price">Rp {{ number_format($package->price, 0, ',', '.') }}</div>
+                        <ul class="package-features">
+                            <li>{{ $package->destination }}</li>
+                            <li>Durasi {{ $package->duration_days }} hari</li>
+                            @if($package->travelPartner)
+                                <li>by {{ $package->travelPartner->company_name }}</li>
+                            @endif
+                            @if($package->description)
+                                <li>{{ Str::limit($package->description, 50) }}</li>
+                            @endif
+                            <li>Tanggal: {{ \Carbon\Carbon::parse($package->start_date)->format('d M Y') }}</li>
+                        </ul>
+                        <button class="package-btn" onclick="showPackageDetail({{ $package->id }})">Pilih Paket</button>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <!-- Fallback ke paket statis jika belum ada data -->
+                <div class="package-card">
+                    <div class="package-image">🕌</div>
+                    <div class="package-content">
+                        <h3 class="package-title">Umroh Ekonomis 9 Hari</h3>
+                        <div class="package-price">Rp 25.000.000</div>
+                        <ul class="package-features">
+                            <li>Hotel bintang 3 di Makkah & Madinah</li>
+                            <li>Transportasi AC selama di Arab Saudi</li>
+                            <li>Makan 3x sehari</li>
+                            <li>Pembimbing berpengalaman</li>
+                            <li>Visa & handling</li>
+                        </ul>
+                        <button class="package-btn">Pilih Paket</button>
+                    </div>
+                </div>
+                
+                <div class="package-card">
+                    <div class="package-image">⭐</div>
+                    <div class="package-content">
+                        <h3 class="package-title">Umroh VIP 12 Hari</h3>
+                        <div class="package-price">Rp 45.000.000</div>
+                        <ul class="package-features">
+                            <li>Hotel bintang 5 dekat Haram</li>
+                            <li>Transportasi VIP</li>
+                            <li>Buffet premium</li>
+                            <li>City tour Madinah</li>
+                            <li>Ziarah lengkap</li>
+                        </ul>
+                        <button class="package-btn">Pilih Paket</button>
+                    </div>
+                </div>
+                
+                <div class="package-card">
+                    <div class="package-image">🌍</div>
+                    <div class="package-content">
+                        <h3 class="package-title">Wisata Halal Turki</h3>
+                        <div class="package-price">Rp 35.000.000</div>
+                        <ul class="package-features">
+                            <li>Istanbul, Cappadocia, Pamukkale</li>
+                            <li>Hotel halal bintang 4</li>
+                            <li>Makanan halal terjamin</li>
+                            <li>Panduan wisata muslim</li>
+                            <li>Shopping tour</li>
+                        </ul>
+                        <button class="package-btn">Pilih Paket</button>
+                    </div>
+                </div>
+            @endforelse
         </div>
-    @else
-        <p style="text-align:center; color:#666;">Belum ada paket aktif untuk kategori ini.</p>
-    @endif
+    </div>
 </section>
 
 <!-- Testimonials Section -->
@@ -905,14 +944,11 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// Lindungi handler jika elemen tidak ada
-const searchForm = document.getElementById('searchForm');
-if (searchForm) {
-    searchForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Fitur pencarian akan segera tersedia!');
-    });
-}
+// Form submission
+document.getElementById('searchForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Fitur pencarian akan segera tersedia!');
+});
 </script>
 
 <script>

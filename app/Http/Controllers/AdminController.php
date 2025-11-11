@@ -453,8 +453,46 @@ class AdminController extends Controller
     public function destroyWebinar(Webinar $webinar)
     {
         $webinar->delete();
-        
+
         return redirect()->route('admin.webinars.index')
             ->with('success', 'Webinar berhasil dihapus!');
+    }
+
+    // Tambahan: daftar pendaftar webinar
+    public function webinarRegistrations(Webinar $webinar)
+    {
+        $registrations = $webinar->registrations()->latest()->paginate(20);
+        return view('admin.webinars.registrations', compact('webinar', 'registrations'));
+    }
+
+    // Tambahan: ekspor CSV pendaftar webinar
+    public function exportWebinarRegistrations(Webinar $webinar)
+    {
+        $registrations = $webinar->registrations()->orderBy('created_at')->get();
+
+        $headers = ['Nama', 'Jenis Kelamin', 'Email', 'WhatsApp', 'Kota', 'Sumber', 'Terdaftar Pada'];
+        $csvRows = [];
+        $csvRows[] = implode(',', $headers);
+
+        foreach ($registrations as $r) {
+            $row = [
+                str_replace(',', ' ', $r->name),
+                $r->gender,
+                $r->email,
+                $r->whatsapp,
+                str_replace(',', ' ', $r->city),
+                $r->source,
+                $r->created_at->format('Y-m-d H:i:s'),
+            ];
+            $csvRows[] = implode(',', $row);
+        }
+
+        $csv = implode("\n", $csvRows);
+        $filename = 'webinar_' . $webinar->id . '_registrations_' . now()->format('Ymd_His') . '.csv';
+
+        return response($csv, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
     }
 }

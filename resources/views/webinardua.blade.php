@@ -132,94 +132,96 @@
                         </div>
                     @endif
             
-                    <form action="{{ route('webinar.register') }}" method="POST" class="space-y-3">
-                        @csrf
-                        <div>
-                            <label class="block font-poppins text-sm mb-1">Nama Lengkap *</label>
-                            <input type="text" 
-                                   name="name" 
-                                   value="{{ old('name') }}"
-                                   class="w-full px-2 py-1 text-sm border rounded-lg @error('name') border-red-500 @enderror" 
-                                   required>
-                        </div>
+                    <!-- Di dalam form pendaftaran -->
+                    <div>
+                        <label class="block font-poppins text-sm mb-1">Nama Lengkap *</label>
+                        <input type="text" 
+                               name="name" 
+                               value="{{ old('name') }}"
+                               class="w-full px-2 py-1 text-sm border rounded-lg @error('name') border-red-500 @enderror" 
+                               required>
+                    </div>
             
-                        <div>
-                            <label class="block font-poppins text-sm mb-1">Jenis Kelamin *</label>
-                            <div class="space-x-4 text-sm">
-                                <label class="inline-flex items-center">
-                                    <input type="radio" name="gender" value="male" class="form-radio" {{ old('gender') == 'male' ? 'checked' : '' }} required>
-                                    <span class="ml-1">Pria</span>
-                                </label>
-                                <label class="inline-flex items-center">
-                                    <input type="radio" name="gender" value="female" class="form-radio" {{ old('gender') == 'female' ? 'checked' : '' }}>
-                                    <span class="ml-1">Wanita</span>
-                                </label>
-                            </div>
+                    <div>
+                        <label class="block font-poppins text-sm mb-1">Jenis Kelamin *</label>
+                        <div class="space-x-4 text-sm">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="gender" value="male" class="form-radio" {{ old('gender') == 'male' ? 'checked' : '' }} required>
+                                <span class="ml-1">Pria</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="gender" value="female" class="form-radio" {{ old('gender') == 'female' ? 'checked' : '' }}>
+                                <span class="ml-1">Wanita</span>
+                            </label>
                         </div>
+                    </div>
             
-                        <div>
-                            <label class="block font-poppins mb-2">Email *</label>
-                            <input type="email" 
-                                   name="email" 
-                                   value="{{ old('email') }}"
-                                   class="w-full px-4 py-2 border rounded-lg @error('email') border-red-500 @enderror" 
-                                   required>
-                            <p class="text-sm text-gray-500 mt-1">Contoh: nama@domain.com</p>
-                        </div>
+                    <div>
+                        <label class="block font-poppins mb-2">Email *</label>
+                        <input type="email" 
+                               name="email" 
+                               value="{{ old('email') }}"
+                               class="w-full px-4 py-2 border rounded-lg @error('email') border-red-500 @enderror" 
+                               required>
+                        <p class="text-sm text-gray-500 mt-1">Contoh: nama@domain.com</p>
+                    </div>
             
-                        <div>
-                            <label class="block font-poppins mb-2">WhatsApp *</label>
-                            <input type="tel" 
-                                   name="whatsapp" 
-                                   value="{{ old('whatsapp') }}"
-                                   placeholder="+628123456789"
-                                   class="w-full px-4 py-2 border rounded-lg @error('whatsapp') border-red-500 @enderror" 
-                                   required>
-                            <p class="text-sm text-gray-500 mt-1">Masukkan nomor dengan format: +62812XXXXX (minimal 10 digit)</p>
-                        </div>
+                    <div>
+                        <label class="block font-poppins mb-2">WhatsApp *</label>
+                        <input type="tel" 
+                               name="whatsapp" 
+                               value="{{ old('whatsapp') }}"
+                               placeholder="+628123456789"
+                               class="w-full px-4 py-2 border rounded-lg @error('whatsapp') border-red-500 @enderror" 
+                               required>
+                        <p class="text-sm text-gray-500 mt-1">Masukkan nomor dengan format: +62812XXXXX (minimal 10 digit)</p>
+                    </div>
             
-                        <div>
-                            <label class="block font-poppins mb-2">Kota Domisili *</label>
-                            <select name="city" id="citySelect" 
-                                    class="w-full px-4 py-2 border rounded-lg @error('city') border-red-500 @enderror"
-                                    required>
-                                <option value="">Pilih Kota</option>
-                                @foreach($cities as $key => $city)
-                                    <option value="{{ $key }}" {{ old('city') == $key ? 'selected' : '' }}>
-                                        {{ $city }}
-                                    </option>
-                                @endforeach
-                                <option value="other" {{ old('city') == 'other' ? 'selected' : '' }}>Kota Lainnya</option>
-                            </select>
-                            
-                            <input type="text" 
-                                   id="otherCity" 
-                                   name="other_city" 
-                                   value="{{ old('other_city') }}"
-                                   class="w-full px-4 py-2 border rounded-lg mt-2 {{ old('city') == 'other' ? '' : 'hidden' }}"
-                                   placeholder="Masukkan nama kota Anda">
-                        </div>
+                    <div>
+                        <label class="block font-poppins mb-2">Kota Domisili *</label>
+                        <select name="city" id="citySelect" 
+                                class="w-full px-4 py-2 border rounded-lg @error('city') border-red-500 @enderror"
+                                required>
+                            <option value="">Pilih Kota</option>
+                            @foreach($cities as $key => $city)
+                                <option value="{{ $key }}" {{ old('city') == $key ? 'selected' : '' }}>
+                                    {{ $city }}
+                                </option>
+                            @endforeach
+                            <option value="other" {{ old('city') == 'other' ? 'selected' : '' }}>Kota Lainnya</option>
+                        </select>
+                        
+                        <input type="text" 
+                               id="otherCity" 
+                               name="other_city" 
+                               value="{{ old('other_city') }}"
+                               class="w-full px-4 py-2 border rounded-lg mt-2 {{ old('city') == 'other' ? '' : 'hidden' }}"
+                               placeholder="Masukkan nama kota Anda">
+                    </div>
             
-                        <div>
-                            <label class="block font-poppins mb-2">Darimana Anda mengetahui Jalan Haramain? *</label>
-                            <select name="source" 
-                                    class="w-full px-4 py-2 border rounded-lg @error('source') border-red-500 @enderror"
-                                    required>
-                                <option value="">Pilih Sumber Informasi</option>
-                                <option value="instagram" {{ old('source') == 'instagram' ? 'selected' : '' }}>Instagram</option>
-                                <option value="facebook" {{ old('source') == 'facebook' ? 'selected' : '' }}>Facebook</option>
-                                <option value="thread" {{ old('source') == 'thread' ? 'selected' : '' }}>Thread</option>
-                                <option value="whatsapp" {{ old('source') == 'whatsapp' ? 'selected' : '' }}>WhatsApp Grup</option>
-                                <option value="friend" {{ old('source') == 'friend' ? 'selected' : '' }}>Teman/Kerabat</option>
-                                <option value="other" {{ old('source') == 'other' ? 'selected' : '' }}>Lainnya</option>
-                            </select>
-                        </div>
+                    <div>
+                        <label class="block font-poppins mb-2">Darimana Anda mengetahui Jalan Haramain? *</label>
+                        <select name="source" 
+                                class="w-full px-4 py-2 border rounded-lg @error('source') border-red-500 @enderror"
+                                required>
+                            <option value="">Pilih Sumber Informasi</option>
+                            <option value="instagram" {{ old('source') == 'instagram' ? 'selected' : '' }}>Instagram</option>
+                            <option value="facebook" {{ old('source') == 'facebook' ? 'selected' : '' }}>Facebook</option>
+                            <option value="thread" {{ old('source') == 'thread' ? 'selected' : '' }}>Thread</option>
+                            <option value="whatsapp" {{ old('source') == 'whatsapp' ? 'selected' : '' }}>WhatsApp Grup</option>
+                            <option value="friend" {{ old('source') == 'friend' ? 'selected' : '' }}>Teman/Kerabat</option>
+                            <option value="other" {{ old('source') == 'other' ? 'selected' : '' }}>Lainnya</option>
+                        </select>
+                    </div>
             
-                        <button type="submit" 
-                                onclick="handleSubmit(event)"
-                                class="w-full py-2 text-sm bg-white text-[#D4AF37] font-poppins font-bold rounded-lg hover:shadow-xl transition-all duration-300 border-2 border-[#D4AF37]">
-                            Daftar Sekarang
-                        </button>
+                    <!-- Tambahan: webinar_id wajib untuk validasi backend -->
+                    <input type="hidden" name="webinar_id" value="{{ $webinar->id ?? '' }}">
+            
+                    <button type="submit" 
+                            onclick="handleSubmit(event)"
+                            class="w-full py-2 text-sm bg-white text-[#D4AF37] font-poppins font-bold rounded-lg hover:shadow-xl transition-all duration-300 border-2 border-[#D4AF37]">
+                        Daftar Sekarang
+                    </button>
                     </form>
                 </div>
             </div>
@@ -265,20 +267,25 @@
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+            .then(async (response) => {
+                let data;
+                try {
+                    data = await response.json();
+                } catch (e) {
+                    data = {};
+                }
+
+                if (response.ok && data.success) {
                     // Tutup modal
                     document.getElementById('formModal').classList.remove('show');
-                    
-                    // Jika ada community_link dari admin, gunakan itu
-                    // Jika tidak, gunakan link default yang sudah ada
+
                     const redirectUrl = data.redirect_url || 'https://bit.ly/GabungTourLeader';
-                    
-                    // Redirect ke grup
                     window.location.href = redirectUrl;
                 } else {
-                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                    const msgs = data?.errors
+                        ? Object.values(data.errors).flat().join('\n')
+                        : (data?.message || 'Terjadi kesalahan. Silakan coba lagi.');
+                    alert(msgs);
                 }
             })
             .catch(error => {
@@ -289,3 +296,51 @@
     </script>
 </body>
 </html>
+
+@extends('layouts.utama')
+
+@section('content')
+<div class="container">
+    <form id="webinarForm" method="POST" action="{{ route('webinar.register') }}">
+        @csrf
+        <input type="hidden" name="webinar_id" value="{{ $webinar->id ?? '' }}">
+    </form>
+</div>
+
+<script>
+document.getElementById('webinarForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': form.querySelector('input[name=_token]').value
+        },
+        body: formData
+    })
+    .then(async (response) => {
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            if (data.errors) {
+                const messages = Object.values(data.errors).flat().join('\n');
+                alert(messages);
+            } else {
+                alert('Terjadi kesalahan. Silakan coba lagi.');
+            }
+            return;
+        }
+        if (data.success) {
+            const url = data.redirect_url || 'https://bit.ly/GabungTourLeader';
+            window.location.href = url;
+        } else {
+            alert(data.message || 'Pendaftaran gagal.');
+        }
+    })
+    .catch(() => {
+        alert('Gagal mengirim data. Periksa koneksi Anda.');
+    });
+});
+</script>
+@endsection

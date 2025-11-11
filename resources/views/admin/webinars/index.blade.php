@@ -38,6 +38,7 @@
                             <th>Pendaftar</th>
                             <th>URL Publik</th>
                             <th>Aksi</th>
+                            <th>URL Publik</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,6 +69,10 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
+                                        <a href="{{ route('admin.webinars.registrations', $webinar) }}" 
+                                           class="btn btn-sm btn-info">
+                                            <i class="fas fa-users"></i> Lihat Pendaftar
+                                        </a>
                                         <a href="{{ route('admin.webinars.edit', $webinar) }}" 
                                            class="btn btn-sm btn-warning">
                                             <i class="fas fa-edit"></i>
